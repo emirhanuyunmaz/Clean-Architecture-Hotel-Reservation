@@ -5,7 +5,7 @@ import { Backpack, Camera, MapPin } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="max-w-7xl mx-auto mt-20" >
+    <div className="max-w-7xl mx-auto mt-20  " >
       <div className="flex h-[55vh] " >
 
         <div className="w-1/2 flex flex-col mt-10 gap-8 " >

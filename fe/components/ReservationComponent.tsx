@@ -2,7 +2,8 @@
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker  } from "@mui/x-date-pickers";
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { MapPin, Users } from 'lucide-react';
 
 export default function ReservationComponent(){
     return (<div className="mt-32 border-2 bg-gray-100 rounded-xl py-10 px-10" >
@@ -15,12 +16,13 @@ export default function ReservationComponent(){
             
             <div>
             <FormControl fullWidth>
-                <InputLabel id="peopleNumber">Person</InputLabel>
+                <InputLabel id="peopleNumber" className='bg-white' ><Typography className="flex gap-3 "  ><Users />Person</Typography></InputLabel>
                     <Select
                         labelId='peopleNumber'
                         id="peopleNumber"
                         className='bg-white w-52'
                         label="Person"
+                        
                     >
                         
                         <MenuItem value={1}>Person 1</MenuItem>
@@ -34,10 +36,10 @@ export default function ReservationComponent(){
 
             <div>
             <FormControl fullWidth>
-                <InputLabel id="peopleNumber">Select Location</InputLabel>
+                <InputLabel  className='bg-white' id="locationSelect"><Typography className='flex gap-3' ><MapPin />Select Location</Typography></InputLabel>
                     <Select
-                        labelId='peopleNumber'
-                        id="peopleNumber"
+                        labelId='locationSelect'
+                        id="locationSelect"
                         className='bg-white w-52'
                         label="Person"
                     >

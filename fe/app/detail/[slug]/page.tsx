@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 
 
 export default function Page(){
-    return(<div className="min-h-[50vh] max-w-7xl mx-auto mt-12" >
+    return(<div className="min-h-[50vh] max-w-7xl mx-auto mt-12 px-32" >
         
         {/* INFO */}
         <div className="relative flex items-center w-full" >
