@@ -1,5 +1,7 @@
 'use client'
-import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { useDenemeQuery, useLoginMutation } from "@/store/auth/authApi";
+import { Alert, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Snackbar, TextField } from "@mui/material";
+import { setCookie } from "cookies-next";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -11,6 +13,13 @@ type Inputs = {
 }
   
 export default function Login(){
+    // const deneme = useDenemeQuery("asd")
+    // console.log("AA:",deneme.data);
+    
+    const [login,resLogin] = useLoginMutation()
+
+    const [snackBarSuccesOpen,setSnackBarSuccesOpen] = useState(false)
+    const [snackBarErrorOpen,setSnackBarErrorOpen] = useState(false)
     const [showPassword,setShowPassword] = useState(false)
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -21,7 +30,34 @@ export default function Login(){
         formState: { errors },
       } = useForm<Inputs>()
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+      const snackBarSuccesClose = () => {
+        setSnackBarSuccesOpen(false);
+      };
+      const snackBarErrorClose = () => {
+        setSnackBarErrorOpen(false);
+      };
+    const onSubmit: SubmitHandler<Inputs> =async (data) => {
+        console.log("DDAATTAA::",data);
+        
+        await login(data).unwrap()
+        .then((res) => {
+            console.log("RES:",res)
+            console.log("Token",res.token);
+            if(res.token){
+                setCookie("token",res.token)
+                setSnackBarSuccesOpen(true)
+                // Redirect || Refresh
+            }else{
+                setSnackBarErrorOpen(true)
+            }
+            
+        }).catch((err) => {
+            console.log("ERR:",err);
+            setSnackBarErrorOpen(true)
+            
+        })
+
+    }
 
 
     return (<div className="max-w-7xl mx-auto min-h-[75vh] flex gap-10 mt-10" >
@@ -35,8 +71,10 @@ export default function Login(){
                 <h2 className="text-4xl font-bold text-center" >Login Account</h2>
             </div>
             <div className="flex flex-col gap-3 justify-center" >                    
-                <TextField label="Email" variant="outlined"  {...register("email",{required: true, min: 10, max: 50 })}/>
+                <TextField label="Email" variant="outlined"  {...register("email",{required: true, min: 6, max: 50 })}/>
+
                 {errors.email && <span className="text-red-600 text-sm ms-3" >Email required</span>}
+                
                 <FormControl  variant="outlined">
                     <InputLabel htmlFor="password" className="flex-1">Password</InputLabel>
                     <OutlinedInput
@@ -59,9 +97,9 @@ export default function Login(){
                         </InputAdornment>
                         }
                         label="Password"
-                        {...register("password",{  required: true,min: 10, max: 50 })}
+                        {...register("password",{  required: true,min: 5 })}
                     />
-                    {errors.password && <span className="text-red-600 text-sm ms-3" >Password required</span>}
+                    {errors.password && <span className="text-red-600 text-sm ms-3" >Password is required</span>}
 
                     </FormControl>
                 <Button type="submit" variant="contained" >LOGIN</Button>
@@ -69,6 +107,26 @@ export default function Login(){
             </div>
         
         </form>
-        
+        <Snackbar open={snackBarSuccesOpen} autoHideDuration={6000} onClose={snackBarSuccesClose}>
+            <Alert
+                onClose={snackBarSuccesClose}
+                severity="success"
+                variant="filled"
+                sx={{ width: '100%' }}
+            >
+                SUCCES LOGIN
+            </Alert>
+        </Snackbar>
+
+        <Snackbar open={snackBarErrorOpen} autoHideDuration={6000} onClose={snackBarErrorClose}>
+            <Alert
+                onClose={snackBarErrorClose}
+                severity="error"
+                variant="filled"
+                sx={{ width: '100%' }}
+            >
+                ERROR
+            </Alert>
+        </Snackbar>
     </div>)
 }

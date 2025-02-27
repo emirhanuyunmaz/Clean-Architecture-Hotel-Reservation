@@ -6,8 +6,14 @@ import { UserInteractor } from '../interactors/UserInteractor';
 import { UserRepository } from '../repositories/userRepository';
 import { IUserInteractor } from '../interfaces/IUserInteractor';
 import { UserController } from '../controllers/userController';
+import { IToken } from '../interfaces/IToken';
+import { Token } from '../external-libraries/Token';
 
 const container = new Container();
+
+container
+  .bind<IToken>(INTERFACE_TYPE.Token)
+  .to(Token);
 
 container
   .bind<IUserRepository>(INTERFACE_TYPE.UserRepository)
@@ -24,6 +30,7 @@ const router = express.Router();
 const controller = container.get<UserController>(INTERFACE_TYPE.UserController);
 
 router.post('/createUser', controller.onCreateUser.bind(controller));
+router.post('/login', controller.login.bind(controller));
 router.get('/findUser/:id', controller.onFindUser.bind(controller));
 
 export default router;

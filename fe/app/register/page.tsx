@@ -1,5 +1,6 @@
 'use client'
-import { Button,  FormControl,  IconButton,  InputAdornment,  InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { useSignupMutation } from "@/store/auth/authApi";
+import { Alert, Button,  FormControl,  IconButton,  InputAdornment,  InputLabel, OutlinedInput, Snackbar, TextField } from "@mui/material";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,6 +19,11 @@ type Inputs = {
 export default function Page(){
     const router = useRouter();
     
+    const [sigup,resSignup] = useSignupMutation()
+
+    const [snackBarSuccesOpen,setSnackBarSuccesOpen] = useState(false)
+    const [snackBarErrorOpen,setSnackBarErrorOpen] = useState(false)
+    const [errorMessage,setErrorMessage] = useState("")
     const [showPassword,setShowPassword] = useState(false)
     const [showConfirmPassword,setShowConfirmPassword] = useState(false)
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -28,9 +34,28 @@ export default function Page(){
         handleSubmit,
         watch,
         formState: { errors },
-        } = useForm<Inputs>()
+    } = useForm<Inputs>()
+    
+    const snackBarSuccesClose = () => {
+        setSnackBarSuccesOpen(false);
+    };
+    const snackBarErrorClose = () => {
+        setSnackBarErrorOpen(false);
+    };
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<Inputs> = async(data) => {
+        await sigup(data).unwrap()
+        .then((res) => {
+            console.log("RESSER::",res);
+            setSnackBarSuccesOpen(true)
+            router.back()
+        }).catch((err) => {
+            console.log("EEERRR::",err);
+            setErrorMessage(err.data.error)
+            setSnackBarErrorOpen(true)
+        })
+        console.log(data)
+    }
 
 
     return (<div className="max-w-7xl mx-auto flex min-h-[75vh] mt-10 gap-10" >
@@ -43,16 +68,16 @@ export default function Page(){
             <h2 className="text-center text-4xl font-bold" >Create Account</h2>
             <div className="flex flex-col w-full gap-5" >
                 
-                <TextField label="Name Surname"  variant="outlined"  {...register("nameSurname",{required: "Name and Surname is required", min: 10, max: 50 })}/>
+                <TextField label="Name Surname"  variant="outlined"  {...register("nameSurname",{required: "Name and Surname is required", min: 2 })}/>
                 {errors.nameSurname && <span className="text-red-600 text-sm ms-3" >{errors.nameSurname.message}</span>}
 
-                <TextField label="Email" {...register("email",{required: "Email is required", min: 10, max: 50 })}/>
+                <TextField label="Email" {...register("email",{required: "Email is required", min: 6 })}/>
                 {errors.email && <span className="text-red-600 text-sm ms-3" >{errors.email.message}</span>}
 
-                <TextField label="Phone Number" {...register("phoneNumber",{required: "Phone Number is required", min: 5, max: 20 })}/>
-                {errors.phoneNumber && <span className="text-red-600 text-sm ms-3" >{errors.phoneNumber.message}</span>}
+                <TextField label="Phone Number" type="number" {...register("phoneNumber",{required: "Phone Number is required", min: 5 })}/>
+                {errors.phoneNumber && <span className="text-red-600 text-sm ms-3" >{errors.phoneNumber.message} </span>}
 
-                <TextField label="Country" {...register("country",{required: "Country is required", min: 2, max: 50 })} />
+                <TextField label="Country" {...register("country",{required: "Country is required", min: 2 })} />
                 {errors.country && <span className="text-red-600 text-sm ms-3" >{errors.country.message}</span>}
 
                 <FormControl  variant="outlined">
@@ -77,7 +102,7 @@ export default function Page(){
                         </InputAdornment>
                         }
                         label="Password"
-                        {...register("password",{ required: "Password is required",min: 6, max: 50 })}
+                        {...register("password",{ required: "Password is required",min: 6 })}
                     />
                     {errors.password && <span className="text-red-600 text-sm ms-3" >{errors.password.message}</span>}
                     </FormControl>
@@ -104,7 +129,7 @@ export default function Page(){
                             </InputAdornment>
                             }
                             label="Confirm Password"
-                            {...register("confirmPassword",{  required: "Confirm Password is required",min: 10, max: 50 , 
+                            {...register("confirmPassword",{  required: "Confirm Password is required",min: 6 , 
                                 validate: (val: string) => {
                                 if (watch('password') != val) {
                                   return "Your passwords do no match ";
@@ -120,5 +145,30 @@ export default function Page(){
                 <Button onClick={() => router.back()} className="mx-auto text-blue-500 hover:text-blue-700 transition-all" >LOGIN</Button>
             </div>
             </form>
+            <div>
+
+            <Snackbar open={snackBarSuccesOpen} autoHideDuration={6000} onClose={snackBarSuccesClose}>
+                <Alert
+                    onClose={snackBarSuccesClose}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                    >
+                    SUCCES REGISTER : Please Email Verify
+                </Alert>
+            </Snackbar>
+    
+            <Snackbar open={snackBarErrorOpen} autoHideDuration={6000} onClose={snackBarErrorClose}>
+                <Alert
+                    onClose={snackBarErrorClose}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                    >
+                    ERROR :  
+                     {errorMessage}
+                </Alert>
+            </Snackbar>
+            </div>
     </div>)
 }

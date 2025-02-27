@@ -8,7 +8,8 @@ const schema = new Schema<UserModel>({
   password: { type: String, required: true },
   country: { type: String, required: true },
   phoneNumber: { type: String, required: true },
-  emailIsValid: { type: Boolean, default: false },
+  emailIsValid : { type: Boolean, default: false,required:false },
+  admin: { type: Boolean, default: false ,required:false},
 });
 
 export const User = model<UserModel>('users', schema);
