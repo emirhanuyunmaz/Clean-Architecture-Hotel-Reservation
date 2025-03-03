@@ -53,7 +53,7 @@ export default function Page(){
             console.log("EEERRR::",err);
             setErrorMessage(err.data.error)
             setSnackBarErrorOpen(true)
-        })
+        })  
         console.log(data)
     }
 
