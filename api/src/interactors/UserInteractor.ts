@@ -8,7 +8,7 @@ import { IToken } from '../interfaces/IToken';
 @injectable()
 export class UserInteractor implements IUserInteractor {
   private repository: IUserRepository;
-  private token : IToken; 
+  private token: IToken;
   constructor(
     @inject(INTERFACE_TYPE.UserRepository) repository: IUserRepository,
     @inject(INTERFACE_TYPE.Token) token: IToken
@@ -16,29 +16,38 @@ export class UserInteractor implements IUserInteractor {
     this.repository = repository;
     this.token = token;
   }
-  
+
   async createUser(data: UserModel): Promise<UserModel | null> {
     return this.repository.create(data);
   }
-  
+
   async updateUser(id: String, data: UserModel): Promise<UserModel | null> {
     return this.repository.update(id, data);
   }
-  
+
   async findUser(id: String): Promise<UserModel[] | null> {
     return this.repository.find(id);
   }
-  
-  async findUserEmail({ email }: { email: string; }): Promise<UserModel | null> {
-    return this.repository.findEmail({email});
+
+  async findUserEmail({ email }: { email: string }): Promise<UserModel | null> {
+    return this.repository.findEmail({ email });
   }
 
-  async loginUser({ email, password }: { email: string; password: string; }): Promise<String | null> {
-    const user = await this.repository.login({email,password})
-    if(user != null){
-      const userToken = this.token.createToken({id:user._id as string,admin:user.admin})
-      return userToken
+  async loginUser({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<String | null> {
+    const user = await this.repository.login({ email, password });
+    if (user != null) {
+      const userToken = this.token.createToken({
+        id: user._id as string,
+        admin: user.admin,
+      });
+      return userToken;
     }
-    return null
+    return null;
   }
 }

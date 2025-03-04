@@ -1,14 +1,33 @@
 'use client'
 import { CircleHelp, HandHelping, LayoutDashboard, MessageCircle, Settings, StickyNote, User } from "lucide-react";
 import 'animate.css';
+import { useEffect, useLayoutEffect, useState } from "react";
 import EditProfile from "@/components/profile/EditProfile";
-import { useState } from "react";
 import UserBooking from "@/components/profile/UserBooking";
 import UserMessage from "@/components/profile/UserMessage";
+import UserHelp from "@/components/profile/UserHelp";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 export default function Page(){
-    const [selectMenu,setSelectMenu] = useState(0)
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    
+    const [selectMenu,setSelectMenu] = useState(searchParams.get("select") ? searchParams.get("select") : 0)
+
+    function handleSearch(term: any) {
+        setSelectMenu(term)
+        router.push(`?select=${term}`)
+    }
+
+    useLayoutEffect(() => {
+        if(searchParams.get("select")){
+            handleSearch(searchParams.get("select"))
+        }
+    },[])
+    // useEffect(() => {
+    //     handleSearch(selectMenu)
+    // },[selectMenu])
 
     return (<div className="min-h-[85vh]" >
 
@@ -22,40 +41,40 @@ export default function Page(){
                 </div>
 
                 <div className=" h-full flex flex-col gap-10">
-                    <ul className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3">
                         
-                        <li className="flex gap-3 items-center bg-primary px-2 py-2 text-white rounded-xl " >
+                        <button onClick={() => handleSearch(0)} className={`hover:shadow-xl flex gap-3 items-center p-2 rounded-xl  ${selectMenu == 0 && "active_link"} duration-300`} >
                             <p className="" ><User /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Profile</p>
-                        </li>
+                        </button>
 
-                        <li className="flex gap-3 items-center " >
+                        <button onClick={() => handleSearch(1)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 1 && "active_link"} duration-300 `} >
                             <p className="p-1" ><StickyNote /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Booking</p>
-                        </li>
+                        </button>
 
-                        <li className="flex gap-3 items-center ">
+                        <button onClick={() => handleSearch(2)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 2 && "active_link"} duration-300 `}>
                             <p className="p-1" ><HandHelping /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Refunds</p>
-                        </li>
-                    </ul>
+                        </button>
+                    </div>
 
-                    <ul className="flex flex-col gap-3" >
-                        <li className="flex gap-3 items-center " >
+                    <div  className="flex flex-col gap-3" >
+                        <button onClick={() => handleSearch(3)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 3 && "active_link"} duration-300 `} >
                             <p className="p-1" ><MessageCircle /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Message</p>
-                        </li>
+                        </button>
 
-                        <li className="flex gap-3 items-center " >  
+                        <button onClick={() => handleSearch(4)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 4 && "active_link"} duration-300 `} >  
                             <p className="p-1" ><CircleHelp /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Help</p>
-                        </li>
-{/* 
-                        <li className="flex gap-3 relative" >
+                        </button>
+                        {/* 
+                        <button className="flex gap-3 relative" >
                             <p className="p-1" ><Settings /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`} >Setting</p>
-                        </li> */}
-                    </ul>
+                        </button> */}
+                    </div>
                 </div>
 
                 <div>
@@ -66,9 +85,10 @@ export default function Page(){
             </div>
 
             <div className="mt-10 w-3/4" >
-                {/* <EditProfile/> */}
-                {/* <UserBooking/> */}
-                <UserMessage/>
+                {selectMenu == 0 && <EditProfile/>}
+                {selectMenu == 1 && <UserBooking/>}
+                {selectMenu == 3 && <UserMessage/>}
+                {selectMenu == 4 && <UserHelp/>}
             </div>
         </div>
 

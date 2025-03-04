@@ -1,10 +1,9 @@
-
 type tokenType = {
-    id:String,
-    admin:Boolean
+  id: String;
+  admin: Boolean;
 };
 
 export interface IToken {
-    createToken({id,admin}:tokenType):String;
-    verifyToken(token:string):tokenType;
+  createToken({ id, admin }: tokenType): String;
+  verifyToken(token: string): tokenType;
 }

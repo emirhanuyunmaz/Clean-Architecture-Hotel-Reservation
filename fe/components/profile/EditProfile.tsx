@@ -1,7 +1,8 @@
 'use client'
+import { useGetUserProfileDataQuery } from "@/store/user/userApi";
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { Camera, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
@@ -14,6 +15,9 @@ type Inputs = {
 }
 
 export default function EditProfile(){
+    const getUserProfile = useGetUserProfileDataQuery("")
+    console.log(getUserProfile.data);
+    
     const [showPassword,setShowPassword] = useState(false)
     
     const handleClickShowPassword = () => setShowPassword(!showPassword)
@@ -22,13 +26,23 @@ export default function EditProfile(){
         register,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors },
-    } = useForm<Inputs>()
+    } = useForm<Inputs>({defaultValues:getUserProfile.data})
 
     const onSubmit: SubmitHandler<Inputs> = async(data) => {
         console.log(data);
-        
     }
+
+    useEffect(() => {
+        if(getUserProfile.isSuccess){
+            setValue("email",getUserProfile.data.email)
+            setValue("nameSurname",getUserProfile.data.nameSurname)
+            setValue("gender",getUserProfile.data.gender)
+            setValue("phoneNumber",getUserProfile.data.phoneNumber)
+            setValue("password",getUserProfile.data.password)
+        }
+    },[getUserProfile.isFetching])
 
 
 

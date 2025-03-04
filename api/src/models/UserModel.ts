@@ -6,5 +6,5 @@ export interface UserModel {
   phoneNumber: string;
   country: string;
   emailIsValid: boolean;
-  admin:boolean;
+  admin: boolean;
 }

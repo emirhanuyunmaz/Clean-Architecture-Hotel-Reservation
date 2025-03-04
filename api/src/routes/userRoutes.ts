@@ -8,12 +8,17 @@ import { IUserInteractor } from '../interfaces/IUserInteractor';
 import { UserController } from '../controllers/userController';
 import { IToken } from '../interfaces/IToken';
 import { Token } from '../external-libraries/Token';
+import { IAuthMiddleware } from '../interfaces/IAuthMiddleware';
+import { AuthMiddlewareInteractor } from '../interactors/AuthMiddlewareInteractor';
+import { AuthControl } from '../middleware/AuthControl';
 
 const container = new Container();
 
+container.bind<IToken>(INTERFACE_TYPE.Token).to(Token);
+
 container
-  .bind<IToken>(INTERFACE_TYPE.Token)
-  .to(Token);
+  .bind<IAuthMiddleware>(INTERFACE_TYPE.AuthMiddlewareInteractor)
+  .to(AuthMiddlewareInteractor);
 
 container
   .bind<IUserRepository>(INTERFACE_TYPE.UserRepository)
@@ -24,13 +29,19 @@ container
   .to(UserInteractor);
 
 container.bind(INTERFACE_TYPE.UserController).to(UserController);
+container.bind(INTERFACE_TYPE.AuthControl).to(AuthControl);
 
 const router = express.Router();
 
 const controller = container.get<UserController>(INTERFACE_TYPE.UserController);
+const authController = container.get<AuthControl>(INTERFACE_TYPE.AuthControl);
 
 router.post('/createUser', controller.onCreateUser.bind(controller));
 router.post('/login', controller.login.bind(controller));
-router.get('/findUser/:id', controller.onFindUser.bind(controller));
+router.get(
+  '/findUser',
+  authController.tokenControl.bind(authController),
+  controller.onFindUser.bind(controller)
+);
 
 export default router;
