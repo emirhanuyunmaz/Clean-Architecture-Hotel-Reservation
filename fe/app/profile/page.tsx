@@ -7,6 +7,7 @@ import UserBooking from "@/components/profile/UserBooking";
 import UserMessage from "@/components/profile/UserMessage";
 import UserHelp from "@/components/profile/UserHelp";
 import { useRouter, useSearchParams } from "next/navigation";
+import AdminDashboard from "@/components/profile/AdminDashboard";
 
 
 export default function Page(){
@@ -87,6 +88,7 @@ export default function Page(){
             <div className="mt-10 w-3/4" >
                 {selectMenu == 0 && <EditProfile/>}
                 {selectMenu == 1 && <UserBooking/>}
+                {selectMenu == 2 && <AdminDashboard/>}
                 {selectMenu == 3 && <UserMessage/>}
                 {selectMenu == 4 && <UserHelp/>}
             </div>

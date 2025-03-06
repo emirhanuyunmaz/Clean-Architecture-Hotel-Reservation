@@ -12,4 +12,5 @@ export interface IUserInteractor {
     password: string;
   }): Promise<String | null>;
   findUserEmail({ email }: { email: string }): Promise<UserModel | null>;
+  allUserList(): Promise<UserModel[] | null>;
 }

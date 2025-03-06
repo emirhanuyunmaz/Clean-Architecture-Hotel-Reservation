@@ -46,7 +46,7 @@ export default function Login(){
             if(res.token){
                 setCookie("token",res.token)
                 setSnackBarSuccesOpen(true)
-                // Redirect || Refresh
+                location.reload()
             }else{
                 setSnackBarErrorOpen(true)
             }

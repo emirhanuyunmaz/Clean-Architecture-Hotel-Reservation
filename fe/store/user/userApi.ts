@@ -15,10 +15,25 @@ export const userApi = createApi({
         getUserProfileData:build.query<userProfileTypes,any>({
             query:() => "/findUser",
             providesTags:["user"]
+        }),
+
+        onUpdateUser:build.mutation<userProfileTypes,userProfileTypes>({
+            
+            query:(body) => ({
+                url:`/updateUser`,
+                method:"POST",
+                body:body
+            })
+
+        }),
+
+        getAllUserList:build.query<userProfileTypes[],any>({
+            query : () => "/allUser",
+            providesTags:["user"]
         })
 
 
     }),
 });
 
-export const {useGetUserProfileDataQuery} = userApi
+export const {useGetUserProfileDataQuery , useOnUpdateUserMutation , useGetAllUserListQuery } = userApi

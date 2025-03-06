@@ -16,6 +16,9 @@ export class UserInteractor implements IUserInteractor {
     this.repository = repository;
     this.token = token;
   }
+  allUserList(): Promise<UserModel[] | null> {
+    return this.repository.allUserList();
+  }
 
   async createUser(data: UserModel): Promise<UserModel | null> {
     return this.repository.create(data);
@@ -44,7 +47,7 @@ export class UserInteractor implements IUserInteractor {
     if (user != null) {
       const userToken = this.token.createToken({
         id: user._id as string,
-        admin: user.admin,
+        admin: user.admin!,
       });
       return userToken;
     }

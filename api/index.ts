@@ -10,6 +10,7 @@ const app: Application = express();
 const port = process.env.PORT || 8000;
 
 dbConnect();
+app.use('/uploads', express.static('uploads'));
 app.use(cors()); // Başka bir url den istek atılması işlemi
 app.use(express.json()); // Gelen verilerin JSON formatınada okunabilmesini sağlar
 app.use('/user', userRouter);

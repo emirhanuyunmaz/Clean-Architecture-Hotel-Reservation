@@ -24,6 +24,7 @@ export class UserController {
       const password = req.body['password'];
       const country = req.body['country'];
       const phoneNumber = req.body['phoneNumber'];
+      // console.log(nameSurname,email,password,country,phoneNumber);
 
       const controle = await this.interactor.findUserEmail({ email: email });
 
@@ -58,6 +59,51 @@ export class UserController {
       const { id, admin } = req.headers;
       const data = await this.interactor.findUser(id as string);
       return res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async onUpdateUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { id, admin } = req.headers;
+      const nameSurname = req.body['nameSurname'];
+      const email = req.body['email'].split(' ').join('');
+      const password = req.body['password'];
+      const country = req.body['country'];
+      const phoneNumber = req.body['phoneNumber'];
+      const gender = req.body['gender'];
+      const data = await this.interactor.updateUser(id as string, {
+        phoneNumber,
+        country,
+        email,
+        nameSurname,
+        password,
+        gender,
+      });
+      return res.status(201).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async allUserList(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { id, admin } = req.headers;
+      if (admin) {
+        const data = await this.interactor.allUserList();
+        return res.status(200).json(data);
+      } else {
+        return res.status(400).json({ message: 'Unauthorize' });
+      }
     } catch (err) {
       next(err);
     }

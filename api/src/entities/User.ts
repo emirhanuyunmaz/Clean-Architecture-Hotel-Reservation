@@ -10,6 +10,7 @@ const schema = new Schema<UserModel>({
   phoneNumber: { type: String, required: true },
   emailIsValid: { type: Boolean, default: false, required: false },
   admin: { type: Boolean, default: false, required: false },
+  gender: { type: String, required: false },
 });
 
 export const User = model<UserModel>('users', schema);

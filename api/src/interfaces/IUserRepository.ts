@@ -12,4 +12,5 @@ export interface IUserRepository {
     password: string;
   }): Promise<UserModel | null>;
   findEmail({ email }: { email: string }): Promise<UserModel | null>;
+  allUserList(): Promise<UserModel[] | null>;
 }

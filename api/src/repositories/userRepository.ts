@@ -5,6 +5,9 @@ import { User } from '../entities/User';
 
 @injectable()
 export class UserRepository implements IUserRepository {
+  async allUserList(): Promise<UserModel[] | null> {
+    return await User.find();
+  }
   async create(data: UserModel): Promise<UserModel | null> {
     return await User.create(data);
   }

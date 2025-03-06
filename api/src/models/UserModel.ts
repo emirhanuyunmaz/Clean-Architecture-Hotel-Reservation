@@ -5,6 +5,7 @@ export interface UserModel {
   password: string;
   phoneNumber: string;
   country: string;
-  emailIsValid: boolean;
-  admin: boolean;
+  emailIsValid?: boolean;
+  admin?: boolean;
+  gender?: string;
 }

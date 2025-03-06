@@ -9,12 +9,19 @@ import Tooltip from '@mui/material/Tooltip';
 import { Book, HelpCircle, List, LogOut, Settings, User, User2 } from 'lucide-react';
 import { MouseEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { deleteCookie } from 'cookies-next';
 
 
 export default function UserProfileIcon() {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  
+  const logout = () => {
+    deleteCookie("token");
+    location.reload()
+  }
+
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -100,7 +107,7 @@ export default function UserProfileIcon() {
           Help
         </MenuItem>
         
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <LogOut fontSize="small" />
           </ListItemIcon>

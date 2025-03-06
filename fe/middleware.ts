@@ -23,8 +23,14 @@ export function middleware(request: NextRequest) {
                 }
             }
         }
-        // console.log(decode_token);
-        
+
+        if(request.nextUrl.pathname.startsWith('/profile')){
+            // console.log("TTT::",token);
+            if(token.length == 0){
+                return NextResponse.redirect(new URL('/', request.url))
+            }   
+            return NextResponse.next()
+        }
     }catch(err){
         // Token bilgileri silinecek...
         const response = NextResponse.redirect(new URL('/404', request.url))
@@ -37,5 +43,5 @@ export function middleware(request: NextRequest) {
  
 
 export const config = {
-    matcher: ['/about/:path*', '/dashboard/:path*','/login','/signup'],
+    matcher: ['/about/:path*', '/dashboard/:path*','/login','/signup',"/profile"],
   }
