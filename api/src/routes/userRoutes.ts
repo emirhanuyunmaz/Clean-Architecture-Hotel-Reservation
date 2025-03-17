@@ -48,10 +48,25 @@ router.get(
   authController.tokenControl.bind(authController),
   controller.allUserList.bind(controller)
 );
+router.get(
+  '/searchUser/:searchText',
+  authController.tokenControl.bind(authController),
+  controller.searchUser.bind(controller)
+);
 router.post(
   '/updateUser',
   authController.tokenControl.bind(authController),
   controller.onUpdateUser.bind(controller)
+);
+router.delete(
+  '/singleDeleteUser',
+  authController.tokenControl.bind(authController),
+  controller.singleDeleteUser.bind(controller)
+);
+router.delete(
+  '/multiDeleteUser',
+  authController.tokenControl.bind(authController),
+  controller.multiDeleteUser.bind(controller)
 );
 
 export default router;

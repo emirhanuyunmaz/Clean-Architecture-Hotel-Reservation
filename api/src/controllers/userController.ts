@@ -119,4 +119,51 @@ export class UserController {
       next(err);
     }
   }
+
+  async singleDeleteUser(req:Request,res:Response,next:NextFunction):Promise<any>{
+    try{
+      const {admin} = req.headers
+      if(admin =="true"){
+        const {id} = req.body
+        await this.interactor.singleDeleteUser({id:id})
+        return res.status(201).json({})
+      }
+      return res.status(401).json({})
+    }catch(err){
+      next(err)
+    }
+  }
+
+  async multiDeleteUser(req:Request,res:Response,next:NextFunction):Promise<any>{
+    try{
+      const {admin} = req.headers 
+      if(admin == "true"){
+        const {ids} = req.body
+        await this.interactor.multiDeleteUser({ids:ids})
+        return res.status(201).json({})
+      }
+      return res.status(401).json({})
+    }catch(err){
+      next(err)
+    }
+  }
+
+  async searchUser(req:Request,res:Response,next:NextFunction):Promise<any>{
+    try{
+      const {admin} = req.headers
+      
+      if (admin == "true"){
+        const {searchText} = req.params
+        console.log("SEARCH TEXT:",searchText);
+        const data = await this.interactor.searchUser({searchText:searchText})
+        console.log("UserData:",data);
+        
+        return res.status(201).json(data)   
+      }
+      return res.status(401).json()
+    }catch(err){
+      next(err)
+    }
+  }
+
 }

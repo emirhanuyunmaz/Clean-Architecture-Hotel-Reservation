@@ -16,6 +16,17 @@ export class UserInteractor implements IUserInteractor {
     this.repository = repository;
     this.token = token;
   }
+
+  async multiDeleteUser({ ids }: { ids: []; }): Promise<boolean | null> {
+    return await this.repository.multiDeleteUser({idList:ids})  
+  }
+  async singleDeleteUser({ id }: { id: string; }): Promise<boolean | null> {
+    return await this.repository.singleDeleteUser({id:id})
+  }
+  async searchUser({ searchText }: { searchText: string; }): Promise<UserModel[] | null> {
+    return await this.repository.searchUser({searchText:searchText});
+  }
+
   allUserList(): Promise<UserModel[] | null> {
     return this.repository.allUserList();
   }

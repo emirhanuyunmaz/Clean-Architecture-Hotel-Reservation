@@ -9,3 +9,11 @@ interface userProfileTypes {
     gender:string
     admin?:boolean
 }
+
+interface singleDeleteUserModel{
+    id:string
+}
+
+interface multiDeleteUserModel{
+    ids:[]
+}

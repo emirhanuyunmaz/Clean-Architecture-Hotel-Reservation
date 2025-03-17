@@ -23,17 +23,45 @@ export const userApi = createApi({
                 url:`/updateUser`,
                 method:"POST",
                 body:body
-            })
+            }),
+            invalidatesTags:["user"]
+
+        }),
+
+        onSingleDeleteUser:build.mutation<any,singleDeleteUserModel>({
+            
+            query:(body) => ({
+                url:`/singleDeleteUser`,
+                method:"DELETE",
+                body:body
+            }),
+            invalidatesTags:["user"]
+
+        }),
+
+        onMultiDeleteUser:build.mutation<any,multiDeleteUserModel>({
+            
+            query:(body) => ({
+                url:`/multiDeleteUser`,
+                method:"DELETE",
+                body:body
+            }),
+            invalidatesTags:["user"]
 
         }),
 
         getAllUserList:build.query<userProfileTypes[],any>({
             query : () => "/allUser",
             providesTags:["user"]
-        })
+        }),
+
+        searchUserList:build.query<userProfileTypes[],any>({
+            query : (searchText) => `/searchUser/${searchText}`,
+            providesTags:["user"]
+        }),
 
 
     }),
 });
 
-export const {useGetUserProfileDataQuery , useOnUpdateUserMutation , useGetAllUserListQuery } = userApi
+export const {useGetUserProfileDataQuery , useOnUpdateUserMutation , useGetAllUserListQuery , useOnSingleDeleteUserMutation,useOnMultiDeleteUserMutation , useSearchUserListQuery} = userApi

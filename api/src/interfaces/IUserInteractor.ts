@@ -13,4 +13,7 @@ export interface IUserInteractor {
   }): Promise<String | null>;
   findUserEmail({ email }: { email: string }): Promise<UserModel | null>;
   allUserList(): Promise<UserModel[] | null>;
+  multiDeleteUser({ids}:{ids:[]}):Promise<boolean | null>;
+  singleDeleteUser({id}:{id:string}):Promise<boolean | null>;
+  searchUser({searchText}:{searchText:string}):Promise<UserModel[] | null>;
 }

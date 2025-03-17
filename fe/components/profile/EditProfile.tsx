@@ -2,6 +2,7 @@
 import { useGetUserProfileDataQuery, useOnUpdateUserMutation } from "@/store/user/userApi";
 import { Alert, Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, Snackbar, TextField } from "@mui/material";
 import { Camera, Eye, EyeOff } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -15,9 +16,16 @@ type Inputs = {
 }
 
 export default function EditProfile(){
+    const searchParams = useSearchParams()
+    
+    console.log("Search Params ::",searchParams.get("update"));
+    
     const getUserProfile = useGetUserProfileDataQuery("")
     const [onUpdateUserProfile,resOnUpdateUserProfile] = useOnUpdateUserMutation()
 
+    const [isUpdate,setIsUpdate] = useState(searchParams.get("add") == "true" ? true : false)
+    console.log("IS UPDATE::",isUpdate);
+    
     const [showPassword,setShowPassword] = useState(false)
     const [selectGender,setSelectGender] = useState("")
     const [snackBarSuccesOpen,setSnackBarSuccesOpen] = useState(false)

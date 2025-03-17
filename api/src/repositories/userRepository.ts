@@ -5,6 +5,28 @@ import { User } from '../entities/User';
 
 @injectable()
 export class UserRepository implements IUserRepository {
+  
+  async searchUser({ searchText }: { searchText: string; }): Promise<UserModel[] | null> {
+    return await User.find({nameSurname:{ $regex: new RegExp(searchText), $options: 'i' } })
+  }
+  async singleDeleteUser({ id }: { id: string; }): Promise<boolean | null> {
+    try{
+      await User.deleteOne({_id:id})
+      return true
+    }catch(err){
+      return false
+    }
+  }
+  async multiDeleteUser({ idList }: { idList: []; }): Promise<boolean | null> {
+    try{
+      await User.deleteMany({_id :{$in : idList}})
+      return true
+    }catch(err){
+      return false
+    }
+  }
+
+
   async allUserList(): Promise<UserModel[] | null> {
     return await User.find();
   }
