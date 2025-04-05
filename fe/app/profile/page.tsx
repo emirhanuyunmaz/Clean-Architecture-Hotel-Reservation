@@ -1,5 +1,5 @@
 'use client'
-import { CircleHelp, HandHelping, LayoutDashboard, MessageCircle, Settings, StickyNote, User } from "lucide-react";
+import { CircleHelp, HandHelping, HomeIcon, LayoutDashboard, MessageCircle, PersonStanding, Settings, StickyNote, User } from "lucide-react";
 import 'animate.css';
 import { useEffect, useLayoutEffect, useState } from "react";
 import EditProfile from "@/components/profile/EditProfile";
@@ -8,6 +8,7 @@ import UserMessage from "@/components/profile/UserMessage";
 import UserHelp from "@/components/profile/UserHelp";
 import { useRouter, useSearchParams } from "next/navigation";
 import AdminDashboard from "@/components/profile/AdminDashboard";
+import AdminBook from "@/components/profile/AdminBook";
 
 
 export default function Page(){
@@ -21,11 +22,11 @@ export default function Page(){
         router.push(`?select=${term}`)
     }
 
-    useLayoutEffect(() => {
-        if(searchParams.get("select")){
-            handleSearch(searchParams.get("select"))
-        }
-    },[])
+    // useLayoutEffect(() => {
+    //     if(searchParams.get("select")){
+    //         handleSearch(searchParams.get("select"))
+    //     }
+    // },[])
     // useEffect(() => {
     //     handleSearch(selectMenu)
     // },[selectMenu])
@@ -55,18 +56,23 @@ export default function Page(){
                         </button>
 
                         <button onClick={() => handleSearch(2)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 2 && "active_link"} duration-300 `}>
-                            <p className="p-1" ><HandHelping /></p>
-                            <p className={`animate__animated animate__lightSpeedInLeft flex`}>Refunds</p>
+                            <p className="p-1" ><PersonStanding /></p>
+                            <p className={`animate__animated animate__lightSpeedInLeft flex`}>Users</p>
+                        </button>
+
+                        <button onClick={() => handleSearch(3)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 3 && "active_link"} duration-300 `}>
+                            <p className="p-1" ><HomeIcon /></p>
+                            <p className={`animate__animated animate__lightSpeedInLeft flex`}>Book List</p>
                         </button>
                     </div>
 
                     <div  className="flex flex-col gap-3" >
-                        <button onClick={() => handleSearch(3)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 3 && "active_link"} duration-300 `} >
+                        <button onClick={() => handleSearch(4)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 4 && "active_link"} duration-300 `} >
                             <p className="p-1" ><MessageCircle /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Message</p>
                         </button>
 
-                        <button onClick={() => handleSearch(4)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 4 && "active_link"} duration-300 `} >  
+                        <button onClick={() => handleSearch(5)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 5 && "active_link"} duration-300 `} >  
                             <p className="p-1" ><CircleHelp /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Help</p>
                         </button>
@@ -89,8 +95,9 @@ export default function Page(){
                 {selectMenu == 0 && <EditProfile/>}
                 {selectMenu == 1 && <UserBooking/>}
                 {selectMenu == 2 && <AdminDashboard/>}
-                {selectMenu == 3 && <UserMessage/>}
-                {selectMenu == 4 && <UserHelp/>}
+                {selectMenu == 3 && <AdminBook/>}
+                {selectMenu == 4 && <UserMessage/>}
+                {selectMenu == 5 && <UserHelp/>}
             </div>
         </div>
 

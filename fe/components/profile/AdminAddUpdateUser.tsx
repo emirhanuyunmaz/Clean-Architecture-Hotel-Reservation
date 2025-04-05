@@ -1,7 +1,10 @@
 import { useSignupMutation } from "@/store/auth/authApi"
+import { useGetSingleUserQuery } from "@/store/user/userApi"
 import { Alert, Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, Snackbar, TextField } from "@mui/material"
 import { Camera, Eye, EyeOff } from "lucide-react"
-import { useState } from "react"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 
 
@@ -16,11 +19,21 @@ type Inputs = {
 
 export default function AdminAddUpdateUser({setBack}:{setBack:any}){
 
-    const [signupUser,resSignupUser] = useSignupMutation()
+    const searchParams = useSearchParams()
+    console.log("SSAA:",searchParams.get("add"));
+    console.log("SSAA:",searchParams.get("id"));
+
     const [showPassword,setShowPassword] = useState(false)
     const [selectGender,setSelectGender] = useState("")
     const [snackBarSuccesOpen,setSnackBarSuccesOpen] = useState(false)
     const [snackBarErrorOpen,setSnackBarErrorOpen] = useState(false)
+    const [userId,setUserId] = useState(searchParams.get("id"))
+    const [isAdd,setIsAdd] = useState(searchParams.get("add"))
+    
+
+    const [signupUser,resSignupUser] = useSignupMutation()
+    const userData = useGetSingleUserQuery(searchParams.get("id") ?? "")
+    
     const handleClickShowPassword = () => setShowPassword(!showPassword)
 
 
@@ -31,6 +44,21 @@ export default function AdminAddUpdateUser({setBack}:{setBack:any}){
         setValue,
         formState: { errors },
     } = useForm<Inputs>()
+
+    async function singleUserData(){
+        try{
+            console.log("DATA::",userData.data);
+            
+            setValue("email",userData.data!.email)
+            setValue("country",userData.data!.country)
+            setValue("nameSurname",userData.data!.nameSurname)
+            setValue("password",userData.data!.password)
+            setValue("phoneNumber",userData.data!.phoneNumber)
+            setValue("gender",userData.data!.gender)
+        }catch(err){
+            console.log("ERR:",err);
+        }
+    }
 
 
     const snackBarSuccesClose = () => {
@@ -62,10 +90,30 @@ export default function AdminAddUpdateUser({setBack}:{setBack:any}){
     }
 
 
+    useEffect(() => {
+        if(userId != null && userData.isSuccess){
+            singleUserData()
+        }
+    },[userId,userData.isFetching])
+
+    useEffect(() => {
+        
+        if(isAdd == "null" ){
+            setBack(false)
+        }
+        if(isAdd=="false" && !userId){
+            setBack(false)
+        }
+        if(isAdd=="true" && userId){
+            setBack(false)
+        }
+    },[isAdd,userId])
+
     return(<div className="w-full">
 
-    <div>
+    <div className="flex justify-between">
         <h2 className="text-2xl font-bold" >Edit Profile</h2>
+        {userId && <Link href={`/user/addBook/${userId!}`} >ADD BOOK</Link>}
     </div>
     <div className="flex flex-col md:flex-row  gap-10 mt-10">
         <div className="">
@@ -80,6 +128,7 @@ export default function AdminAddUpdateUser({setBack}:{setBack:any}){
         <form onSubmit={handleSubmit(onSubmit)} className="md:ms-auto md:w-3/4 flex flex-col gap-3" >
             
             <div className="flex flex-col  gap-3 ">
+                
                 <div className="flex-1" >
                 <FormControl fullWidth>
 

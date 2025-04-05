@@ -17,6 +17,11 @@ export const userApi = createApi({
             providesTags:["user"]
         }),
 
+        getSingleUser:build.query<userProfileTypes,string>({
+            query:(id) => `/getSingleUser/${id}`,
+            providesTags:["user"]
+        }),
+
         onUpdateUser:build.mutation<userProfileTypes,userProfileTypes>({
             
             query:(body) => ({
@@ -64,4 +69,4 @@ export const userApi = createApi({
     }),
 });
 
-export const {useGetUserProfileDataQuery , useOnUpdateUserMutation , useGetAllUserListQuery , useOnSingleDeleteUserMutation,useOnMultiDeleteUserMutation , useSearchUserListQuery} = userApi
+export const {useGetUserProfileDataQuery , useOnUpdateUserMutation , useGetAllUserListQuery , useOnSingleDeleteUserMutation,useOnMultiDeleteUserMutation , useSearchUserListQuery , useGetSingleUserQuery} = userApi

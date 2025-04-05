@@ -64,6 +64,29 @@ export class UserController {
     }
   }
 
+  async getSingleUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { id } = req.params;
+      // console.log('GÜncelleme ID :', id);
+
+      if (id != null) {
+        const data = await this.interactor.findUser(id);
+        // console.log('Aranan kullanıcı :', data);
+
+        if (data) {
+          return res.status(200).json(data);
+        }
+      }
+      return res.status(401).json({});
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async onUpdateUser(
     req: Request,
     res: Response,
@@ -120,50 +143,60 @@ export class UserController {
     }
   }
 
-  async singleDeleteUser(req:Request,res:Response,next:NextFunction):Promise<any>{
-    try{
-      const {admin} = req.headers
-      if(admin =="true"){
-        const {id} = req.body
-        await this.interactor.singleDeleteUser({id:id})
-        return res.status(201).json({})
+  async singleDeleteUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { admin } = req.headers;
+      if (admin == 'true') {
+        const { id } = req.body;
+        await this.interactor.singleDeleteUser({ id: id });
+        return res.status(201).json({});
       }
-      return res.status(401).json({})
-    }catch(err){
-      next(err)
+      return res.status(401).json({});
+    } catch (err) {
+      next(err);
     }
   }
 
-  async multiDeleteUser(req:Request,res:Response,next:NextFunction):Promise<any>{
-    try{
-      const {admin} = req.headers 
-      if(admin == "true"){
-        const {ids} = req.body
-        await this.interactor.multiDeleteUser({ids:ids})
-        return res.status(201).json({})
+  async multiDeleteUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { admin } = req.headers;
+      if (admin == 'true') {
+        const { ids } = req.body;
+        await this.interactor.multiDeleteUser({ ids: ids });
+        return res.status(201).json({});
       }
-      return res.status(401).json({})
-    }catch(err){
-      next(err)
+      return res.status(401).json({});
+    } catch (err) {
+      next(err);
     }
   }
 
-  async searchUser(req:Request,res:Response,next:NextFunction):Promise<any>{
-    try{
-      const {admin} = req.headers
-      
-      if (admin == "true"){
-        const {searchText} = req.params
-        console.log("SEARCH TEXT:",searchText);
-        const data = await this.interactor.searchUser({searchText:searchText})
-        console.log("UserData:",data);
-        
-        return res.status(201).json(data)   
+  async searchUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { admin } = req.headers;
+
+      if (admin == 'true') {
+        const { searchText } = req.params;
+        const data = await this.interactor.searchUser({
+          searchText: searchText,
+        });
+        return res.status(201).json(data);
       }
-      return res.status(401).json()
-    }catch(err){
-      next(err)
+      return res.status(401).json();
+    } catch (err) {
+      next(err);
     }
   }
-
 }

@@ -5,6 +5,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import AdminAddUpdateUser from './AdminAddUpdateUser';
 import { useGetAllUserListQuery, useOnMultiDeleteUserMutation, useOnSingleDeleteUserMutation, useSearchUserListQuery } from '@/store/user/userApi';
 import { ClipboardPenLine, Trash } from 'lucide-react';
+import Link from 'next/link';
 
 
 const columns: GridColDef[] = [
@@ -24,9 +25,9 @@ const columns: GridColDef[] = [
                 <Button onClick={async() => {return await onSingleDeleteUser({id:row._id})}}>
                     <Trash/>
                 </Button>
-                <Button onClick={() => console.log("Click",row._id)}>
-                    <ClipboardPenLine />
-                </Button>
+                <Link href={`/profile?select=2&add=false&id=${row._id}`} >
+                    <ClipboardPenLine color='blue' />
+                </Link>
             </div>)},
     },
     
@@ -40,7 +41,8 @@ export default function AdminDashboard(){
     const [searchText,setSearchText] = useState("")
     const [deletedUserList,setDeletedUserList] = useState<any>([])
     const [addAndUpdateUser,setAddAndUpdateUser] = useState(searchParams.get("add") ? true : false)
-    
+    const [userId,setUserId] = useState(searchParams.get("id"))
+
     const getAllUserList = useGetAllUserListQuery("")
     const [multiDeleteUser,resMultiDeleteUser] = useOnMultiDeleteUserMutation()
     const searchUser = useSearchUserListQuery(searchText)
@@ -55,10 +57,15 @@ export default function AdminDashboard(){
     }
 
     useEffect(() => {
-        
+        if(searchParams.get("id")){
+            
+            setAddAndUpdateUser(true)
+        }else{
+            setAddAndUpdateUser(false)
+        }
+    },[searchParams.get("id")])
 
-    },[searchText])
-
+    
     return (<div className='flex flex-col gap-3'>
 
         <div>
@@ -66,7 +73,7 @@ export default function AdminDashboard(){
         </div>
 
 
-        {addAndUpdateUser ?<AdminAddUpdateUser setBack={setAddAndUpdateUser} /> :        
+        {addAndUpdateUser ?<AdminAddUpdateUser setBack={setAddAndUpdateUser}  /> :        
         <div>
             <div className='flex gap-3'>
                 <TextField value={searchText} onChange={(e:ChangeEvent<HTMLInputElement>) => searchTextOnChange(e)} label="Search" className='flex-1' />

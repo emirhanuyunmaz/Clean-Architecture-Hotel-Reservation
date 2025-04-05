@@ -44,6 +44,11 @@ router.get(
   controller.onFindUser.bind(controller)
 );
 router.get(
+  '/getSingleUser/:id',
+  authController.tokenControl.bind(authController),
+  controller.getSingleUser.bind(controller)
+);
+router.get(
   '/allUser',
   authController.tokenControl.bind(authController),
   controller.allUserList.bind(controller)

@@ -1,0 +1,3 @@
+interface deleteBookType{
+    id:string
+}
