@@ -61,16 +61,31 @@ export class BookController {
   ):Promise<any>{
     try{
       const {id} = req.body
-      
       const body = req.body
-      console.log("body:",body);
-      console.log("id:",id);
       if(id != undefined){
-        
         const data = await this.ineractor.updataBook({id:id,book:body})
         return res.status(201).json(data)
       }
       return res.status(404).json(undefined)
+    }catch(err){
+      next(err)
+    }
+  }
+
+  async updateSingleImage(req:Request,res:Response,next:NextFunction):Promise<any>{
+    try{
+      const {id , oldImageName} = req.body
+      const data = this.ineractor.updateBookSingleImage({id:id,oldImageName:oldImageName,newImage:req.file?.buffer!})
+      return res.status(201).json(data)
+    }catch(err){
+      next(err)
+    }
+  }
+
+  async deleteSingleImage(req:Request,res:Response,next:NextFunction):Promise<any>{
+    try{
+
+      
     }catch(err){
       next(err)
     }

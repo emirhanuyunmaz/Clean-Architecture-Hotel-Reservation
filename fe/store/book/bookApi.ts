@@ -48,6 +48,19 @@ export const bookApi = createApi({
             invalidatesTags:["book"]
         }),
 
+        updateBookSingleImage:build.mutation<BookModel,any>({
+            query:(body) => ({
+                url:`/updateBookImage`,
+                method:"POST",
+                body:body,
+                prepareHeaders: (headers:any) => {
+                    headers.set("Content-Type", "multipart/form-data")
+                      return headers
+                },
+            }),
+            invalidatesTags:["book"]
+        }),
+
         deleteSingleBook:build.mutation<deleteBookType,deleteBookType>({
             
             query: (body) => ({
@@ -72,4 +85,4 @@ export const bookApi = createApi({
     })
 })
 
-export const { useGetBookListQuery , useDeleteSingleBookMutation , useDeleteMultiBookMutation ,useCreateBookMutation , useGetBookQuery , useUpdateBookMutation} = bookApi
+export const { useGetBookListQuery , useDeleteSingleBookMutation , useDeleteMultiBookMutation ,useCreateBookMutation , useGetBookQuery , useUpdateBookMutation , useUpdateBookSingleImageMutation} = bookApi

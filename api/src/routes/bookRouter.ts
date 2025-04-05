@@ -73,8 +73,15 @@ router.get(
 
 router.post(
   '/updateBook',
-  // authController.tokenControl.bind(authController),
+  authController.tokenControl.bind(authController),
   controller.onUpdateBook.bind(controller)
+);
+
+router.post(
+  '/updateBookImage',
+  authController.tokenControl.bind(authController),
+  upload.single('newImage'),
+  controller.updateSingleImage.bind(controller)
 );
 
 router.delete(

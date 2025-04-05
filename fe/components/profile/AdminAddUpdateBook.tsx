@@ -1,11 +1,10 @@
-
 import { Alert, Button, Checkbox, FormControl, FormControlLabel, InputAdornment, InputLabel, OutlinedInput, Snackbar, TextField } from "@mui/material";
 import { Bath, BedDouble, Camera,  ImageUpIcon, ParkingMeter, Refrigerator, Trash, Tv, Usb, UtensilsCrossed, Wifi } from "lucide-react";
 import ShowImage from "../ShowImage";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ReactImageUploading from "react-images-uploading";
-import { useCreateBookMutation, useGetBookQuery, useUpdateBookMutation } from "@/store/book/bookApi";
+import { useCreateBookMutation, useGetBookQuery, useUpdateBookMutation, useUpdateBookSingleImageMutation } from "@/store/book/bookApi";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AdminAddUpdateBook(){
@@ -15,6 +14,7 @@ export default function AdminAddUpdateBook(){
     
     const [createBook,resCreateBook] = useCreateBookMutation()
     const [updateBook,resUpdateBook] = useUpdateBookMutation()
+    const [updateBookSingleImage,resUpdateSingleImage] = useUpdateBookSingleImageMutation()
     const getBook = useGetBookQuery(searchParams.get("id"))
 
     const [showImage,setShowImage]= useState(false)
@@ -39,9 +39,30 @@ export default function AdminAddUpdateBook(){
       };
 
     const onChange = (imageList:any, addUpdateIndex:any) => {
-        // console.log(imageList, addUpdateIndex);
         setImages(imageList);
     };
+
+    const updateSingleImage = async ({event,imageName}:{event:ChangeEvent<HTMLInputElement>,imageName:string}) => {
+        try{
+            const formData = new FormData()
+            formData.append("oldImageName",imageName)
+            formData.append("newImage",event.target.files![0])
+            formData.append("id",searchParams.get("id")!)
+            await updateBookSingleImage(formData).unwrap()
+            .then(() => {
+                console.log("ADDSAADDASDADASDASD");
+                
+                getBook.refetch()
+            })
+            .catch((err) => {
+                console.log("ERR",err);
+
+            })
+
+        }catch(err){
+            console.log("ERR:",err);
+        }
+    }
         
     const onSubmit: SubmitHandler<BookModel> = async (data) => {
         try{
@@ -96,7 +117,6 @@ export default function AdminAddUpdateBook(){
     
     async function bookDataGet(){
         if(getBook.isSuccess){
-            
             setValue("description",getBook.data.description)
             setValue("title",getBook.data.title)
             setValue("slug",getBook.data.slug)
@@ -121,7 +141,7 @@ export default function AdminAddUpdateBook(){
 
     useEffect(() => {
         bookDataGet()
-    },[getBook])
+    },[getBook.isFetching,getBook.isSuccess])
 
     return (<div>
             {/* ********************************** */}
@@ -180,7 +200,8 @@ export default function AdminAddUpdateBook(){
                                 <img  src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads${image}`} className="w-64 h-40 border-2 border-secondary rounded-xl mb-1" alt="book images" />
                                 <div className="flex justify-around gap-3">
                                     <Button variant="contained" color="error" ><Trash/></Button>
-                                    <Button variant="contained"  ><ImageUpIcon/></Button>
+                                    <label htmlFor="uploadImage" className="bg-primary text-white px-3 py-2 rounded-lg hover:opacity-70 transition-all cursor-pointer" ><ImageUpIcon/></label>
+                                    <input onChange={(e) => updateSingleImage({event:e,imageName:image})} id="uploadImage"type="file" accept=".png, .jpg, .jpeg"  hidden />
                                 </div>
                             </div>
                         )

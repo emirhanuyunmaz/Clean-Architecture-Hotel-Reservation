@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/nextjs,node,reactnative
 # Edit at https://www.toptal.com/developers/gitignore?templates=nextjs,node,reactnative
-
+#Images
+*.png
 ### NextJS ###
 # dependencies
 /node_modules

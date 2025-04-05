@@ -16,6 +16,21 @@ export class BookInteractor implements IBookInteractor {
     this.repository = repository;
     this.imagesProcess = imagesProcess;
   }
+  async updateBookSingleImage({ id, oldImageName, newImage }: { id: string; oldImageName: string; newImage: ArrayBuffer; }): Promise<BookModel | null> {
+    const book = await this.repository.getBook({id:id})
+    if(book){
+      let imageList = book?.images
+      await this.imagesProcess.deleteSingleImage(oldImageName)
+      const newImageName = await this.imagesProcess.uploadSingleImage(newImage)
+      imageList = imageList?.filter(img => img != oldImageName)
+      imageList.push(newImageName)
+      book!.images = imageList!
+      const newBook = await this.repository.updateBook({id,book})
+      return newBook
+    }else{
+      throw new Error("Not found book")
+    }
+  }
 
   
   async createBook(book: BookModel): Promise<BookModel | undefined> {
