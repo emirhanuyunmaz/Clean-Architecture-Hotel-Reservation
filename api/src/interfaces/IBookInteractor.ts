@@ -36,4 +36,6 @@ export interface IBookInteractor {
     id: string;
     imageName: string;
   }): Promise<BookModel | null>;
+
+  searchBook(name: string): Promise<BookModel[] | null>;
 }

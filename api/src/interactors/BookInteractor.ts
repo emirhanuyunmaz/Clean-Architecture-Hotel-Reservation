@@ -16,6 +16,13 @@ export class BookInteractor implements IBookInteractor {
     this.repository = repository;
     this.imagesProcess = imagesProcess;
   }
+  async searchBook(name: string): Promise<BookModel[] | null> {
+    if (name) {
+      return await this.repository.searchBook(name);
+    } else {
+      throw new Error('Not found Search Book');
+    }
+  }
   async deleteBookSingleImage({
     id,
     imageName,

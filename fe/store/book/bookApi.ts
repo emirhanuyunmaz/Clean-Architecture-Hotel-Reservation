@@ -12,8 +12,8 @@ export const bookApi = createApi({
     }),
     endpoints:(build)=> ({
         
-        getBookList : build.query<BookModel[],any>({
-            query:() => `/bookList`,
+        getBookList : build.query<BookModel[],string>({
+            query:(searchText) => `/bookList?${searchText && "searchText="+searchText}`,
             providesTags:["book"]
         }),
 
@@ -87,7 +87,7 @@ export const bookApi = createApi({
             
             query: (body) => ({
                 url:`/deleteSingleBook`,
-                method:"Delete",
+                method:"DELETE",
                 body:body
             }),
             

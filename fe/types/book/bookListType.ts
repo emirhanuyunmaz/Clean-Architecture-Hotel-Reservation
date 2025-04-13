@@ -46,3 +46,7 @@ interface BookModel {
 interface multiDeleteBookModel{
     ids:string[]
 }
+
+interface searchBookModel{
+    searchText:string
+}

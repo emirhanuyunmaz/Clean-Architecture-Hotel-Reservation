@@ -13,4 +13,5 @@ export interface IBookRepository {
   }): Promise<BookModel | null>;
   deleteSingleBook(id: string): Promise<BookModel | undefined>;
   deleteMultiBook(ids: string[]): Promise<BookModel[] | undefined>;
+  searchBook(name: string): Promise<BookModel[] | null>;
 }

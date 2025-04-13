@@ -92,6 +92,20 @@ export class BookController {
     }
   }
 
+  async searchBook(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { searchText } = req.body;
+      const data = await this.ineractor.searchBook(searchText);
+      return res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async addSingleImage(
     req: Request,
     res: Response,
@@ -136,8 +150,15 @@ export class BookController {
   ): Promise<any> {
     try {
       const { id, admin } = req.headers;
-      const data = await this.ineractor.getBookList();
-      return res.status(200).json(data);
+      const searchText = req.query.searchText;
+      console.log(searchText);
+      if (searchText) {
+        const data = await this.ineractor.searchBook(searchText as string);
+        res.status(200).json(data);
+      } else {
+        const data = await this.ineractor.getBookList();
+        return res.status(200).json(data);
+      }
     } catch (err) {
       next(err);
     }
