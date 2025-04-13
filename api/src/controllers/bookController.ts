@@ -30,7 +30,7 @@ export class BookController {
       );
       newBook = {
         ...newBook,
-        images:imageNameList,
+        images: imageNameList,
       };
       const data = await this.ineractor.createBook(newBook);
       return res.status(201).json(data);
@@ -45,49 +45,87 @@ export class BookController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const id = req.params.id
-      if(id != "null"){
-        const data = await this.ineractor.getBook({id:id})
-        return res.status(200).json(data)
+      const id = req.params.id;
+      if (id != 'null') {
+        const data = await this.ineractor.getBook({ id: id });
+        return res.status(200).json(data);
       }
-      return res.status(300).json(undefined)
+      return res.status(300).json(undefined);
     } catch (err) {
       next(err);
     }
   }
 
   async onUpdateBook(
-    req:Request,res:Response,next:NextFunction
-  ):Promise<any>{
-    try{
-      const {id} = req.body
-      const body = req.body
-      if(id != undefined){
-        const data = await this.ineractor.updataBook({id:id,book:body})
-        return res.status(201).json(data)
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { id } = req.body;
+      const body = req.body;
+      if (id != undefined) {
+        const data = await this.ineractor.updataBook({ id: id, book: body });
+        return res.status(201).json(data);
       }
-      return res.status(404).json(undefined)
-    }catch(err){
-      next(err)
+      return res.status(404).json(undefined);
+    } catch (err) {
+      next(err);
     }
   }
 
-  async updateSingleImage(req:Request,res:Response,next:NextFunction):Promise<any>{
-    try{
-      const {id , oldImageName} = req.body
-      const data = this.ineractor.updateBookSingleImage({id:id,oldImageName:oldImageName,newImage:req.file?.buffer!})
-      return res.status(201).json(data)
-    }catch(err){
-      next(err)
+  async updateSingleImage(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { id, oldImageName } = req.body;
+      const data = await this.ineractor.updateBookSingleImage({
+        id: id,
+        oldImageName: oldImageName,
+        newImage: req.file?.buffer!,
+      });
+      return res.status(201).json(data);
+    } catch (err) {
+      next(err);
     }
   }
 
-  async deleteSingleImage(req:Request,res:Response,next:NextFunction):Promise<any>{
-    try{
+  async addSingleImage(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      console.log('New single image');
 
-      
-    }catch(err){
-      next(err)
+      const { id } = req.body;
+
+      const data = await this.ineractor.addNewSingleImage({
+        id: id,
+        newImage: req.file?.buffer!,
+      });
+      return res.status(201).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async deleteSingleImage(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { imageName, id } = req.body;
+      const data = await this.ineractor.deleteBookSingleImage({
+        id: id,
+        imageName: imageName,
+      });
+      return res.status(201).json(data);
+    } catch (err) {
+      next(err);
     }
   }
 

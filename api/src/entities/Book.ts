@@ -8,7 +8,7 @@ const schema = new Schema<BookModel>({
   price: { type: String, required: true },
   title: { type: String, required: true },
   slug: { type: String, required: true },
-  totalRoom:{ type: String, required: true },
+  totalRoom: { type: String, required: true },
   roomFacilities: {
     bathroom: {
       active: String,

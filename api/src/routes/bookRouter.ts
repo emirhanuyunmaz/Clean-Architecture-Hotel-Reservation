@@ -84,6 +84,19 @@ router.post(
   controller.updateSingleImage.bind(controller)
 );
 
+router.post(
+  '/deleteBookSingleImage',
+  authController.tokenControl.bind(authController),
+  controller.deleteSingleImage.bind(controller)
+);
+
+router.post(
+  '/addBookSingleImage',
+  authController.tokenControl.bind(authController),
+  upload.single('newImage'),
+  controller.addSingleImage.bind(controller)
+);
+
 router.delete(
   '/deleteSingleBook',
   authController.tokenControl.bind(authController),

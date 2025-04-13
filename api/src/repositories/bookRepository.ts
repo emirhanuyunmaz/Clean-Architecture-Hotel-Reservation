@@ -13,8 +13,8 @@ export class bookRepository implements IBookRepository {
     return await Book.create(book);
   }
   async getBook({ id }: { id: string }): Promise<BookModel | null> {
-    const data = await Book.findById(id)
-    return data
+    const data = await Book.findById(id);
+    return data;
   }
   async getBookList(): Promise<BookModel[] | null> {
     return await Book.find();

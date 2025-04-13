@@ -4,7 +4,7 @@ import ShowImage from "../ShowImage";
 import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ReactImageUploading from "react-images-uploading";
-import { useCreateBookMutation, useGetBookQuery, useUpdateBookMutation, useUpdateBookSingleImageMutation } from "@/store/book/bookApi";
+import { useAddBookSingleImageMutation, useCreateBookMutation, useDeleteBookSingleImageMutation, useGetBookQuery, useUpdateBookMutation, useUpdateBookSingleImageMutation } from "@/store/book/bookApi";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AdminAddUpdateBook(){
@@ -16,6 +16,8 @@ export default function AdminAddUpdateBook(){
     const [updateBook,resUpdateBook] = useUpdateBookMutation()
     const [updateBookSingleImage,resUpdateSingleImage] = useUpdateBookSingleImageMutation()
     const getBook = useGetBookQuery(searchParams.get("id"))
+    const [addBookSingleImage,resAddBookSingleImage] = useAddBookSingleImageMutation()
+    const [deleteBookSingleImge,resDeleteSingleImage] = useDeleteBookSingleImageMutation()
 
     const [showImage,setShowImage]= useState(false)
     const [snackBarSuccesOpen,setSnackBarSuccesOpen] = useState(false)
@@ -42,21 +44,44 @@ export default function AdminAddUpdateBook(){
         setImages(imageList);
     };
 
+    const addSingleImage = async(event:ChangeEvent<HTMLInputElement>) => {
+        const formData = new FormData()
+        formData.append("id",searchParams.get("id")!)
+        formData.append("newImage",event.target.files![0])
+        await addBookSingleImage(formData).unwrap()
+        .then(async() => {
+            await getBook.refetch()
+        })
+        .catch((err) => {
+            console.log("ERR",err);
+
+        })
+    }
+
+    const deleteSingleImage = async (imageName:string) => {
+        console.log("DEL:",imageName);
+        
+        await deleteBookSingleImge({imageName:imageName,id:searchParams.get("id")}).unwrap()
+        .then(async() => {
+            await getBook.refetch()
+        })
+        .catch((err) => {
+            console.log("ERR:",err);
+        })
+    }
+
     const updateSingleImage = async ({event,imageName}:{event:ChangeEvent<HTMLInputElement>,imageName:string}) => {
-        try{
+        try{            
             const formData = new FormData()
             formData.append("oldImageName",imageName)
             formData.append("newImage",event.target.files![0])
             formData.append("id",searchParams.get("id")!)
             await updateBookSingleImage(formData).unwrap()
-            .then(() => {
-                console.log("ADDSAADDASDADASDASD");
-                
-                getBook.refetch()
+            .then(async(res) => {
+                await getBook.refetch()
             })
             .catch((err) => {
                 console.log("ERR",err);
-
             })
 
         }catch(err){
@@ -141,7 +166,7 @@ export default function AdminAddUpdateBook(){
 
     useEffect(() => {
         bookDataGet()
-    },[getBook.isFetching,getBook.isSuccess])
+    },[getBook.isFetching,getBook.isSuccess,getBook.data?.images])
 
     return (<div>
             {/* ********************************** */}
@@ -191,24 +216,36 @@ export default function AdminAddUpdateBook(){
                 </ReactImageUploading>
             </div>}
             {/* *********************************** */}
+            <div className="flex gap-3">
+                {
+                    updateImage.length != 5 && updateImage.length != 0 &&<> <label htmlFor="addNewImage" className="w-40 h-40 cursor-pointer hover:font-bold border border-secondary flex flex-col rounded-xl justify-center items-center">
+                        <Camera/>
+                        <p>Add Image</p>
+                    </label >
+                    <input onChange={(e) => addSingleImage(e)} id="addNewImage" type="file" accept=".png, .jpg, .jpeg"  hidden/>
+                    </>
+                }
 
-           {updateImage.length > 0 &&
-                <div className="flex gap-3 mb-5">
-                    {
-                        updateImage.map((image,index) => 
-                            <div key={index}>
-                                <img  src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads${image}`} className="w-64 h-40 border-2 border-secondary rounded-xl mb-1" alt="book images" />
-                                <div className="flex justify-around gap-3">
-                                    <Button variant="contained" color="error" ><Trash/></Button>
-                                    <label htmlFor="uploadImage" className="bg-primary text-white px-3 py-2 rounded-lg hover:opacity-70 transition-all cursor-pointer" ><ImageUpIcon/></label>
-                                    <input onChange={(e) => updateSingleImage({event:e,imageName:image})} id="uploadImage"type="file" accept=".png, .jpg, .jpeg"  hidden />
-                                </div>
-                            </div>
-                        )
-                    }
-                    
-                </div>
-            }
+                {updateImage.length > 0 &&
+                        <div className="flex gap-3 mb-5">
+                            {
+                                updateImage.map((image,index) => 
+                                    <div key={index}>
+                                        <img  src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads${image}`} className="w-64 h-40 border-2 border-secondary rounded-xl mb-1" alt="book images" />
+                                        <div className="flex justify-around gap-3">
+                                            <Button  onClick={() => deleteSingleImage(image)} variant="contained" color="error" ><Trash/></Button>
+                                            <label htmlFor={`uploadImage${index}`} className="bg-primary text-white px-3 py-2 rounded-lg hover:opacity-70 transition-all cursor-pointer" ><ImageUpIcon/></label>
+                                     
+                                            <input onChange={(e) => updateSingleImage({event:e,imageName:image})} id={`uploadImage${index}`} type="file" accept=".png, .jpg, .jpeg"  hidden />
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            
+                        </div>
+                }
+
+            </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
         
@@ -417,7 +454,7 @@ export default function AdminAddUpdateBook(){
                 variant="filled"
                 sx={{ width: '100%' }}
                 >
-                SUCCES LOGIN
+                SUCCES
             </Alert>
         </Snackbar>
 
