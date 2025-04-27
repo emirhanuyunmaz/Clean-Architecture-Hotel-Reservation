@@ -67,8 +67,19 @@ router.get(
 
 router.get(
   '/book/:id',
-  // authController.tokenControl.bind(authController),
+  authController.tokenControl.bind(authController),
   controller.onFindBook.bind(controller)
+);
+
+router.get(
+  '/singleBook/:slug',
+  // authController.tokenControl.bind(authController),
+  controller.slugOnFindBook.bind(controller)
+);
+
+router.get(
+  '/searchLocationBook',
+  controller.locationOnFindBook.bind(controller)
 );
 
 router.post(

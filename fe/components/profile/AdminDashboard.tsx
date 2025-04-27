@@ -25,7 +25,7 @@ const columns: GridColDef[] = [
                 <Button onClick={async() => {return await onSingleDeleteUser({id:row._id})}}>
                     <Trash/>
                 </Button>
-                <Link href={`/profile?select=2&add=false&id=${row._id}`} >
+                <Link href={`?select=2&add=false&id=${row._id}`} >
                     <ClipboardPenLine color='blue' />
                 </Link>
             </div>)},
@@ -85,8 +85,6 @@ export default function AdminDashboard(){
                 {/* <AdminDashboardTable/> */}
                 <Paper sx={{ height: "90%", width: '100%' }}>
                     <DataGrid
-                        
-                        // onRowClick={(event,rowData) => router.push(`/userDetail/${event.id}`)}
                         rows={searchText != "" ? searchUser.data : getAllUserList.data}
                         columns={columns}
                         initialState={{ pagination: { paginationModel } }}

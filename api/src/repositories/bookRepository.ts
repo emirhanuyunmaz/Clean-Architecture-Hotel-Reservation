@@ -5,6 +5,15 @@ import { BookModel } from '../models/BookModel';
 
 @injectable()
 export class bookRepository implements IBookRepository {
+
+  async locationSlugOnFindBook(location: string): Promise<BookModel[] | null> {
+    return await Book.find({
+      location: { $regex: new RegExp(location), $options: 'i' },
+    }); 
+  }
+  async slugOnFindBook(slug: string): Promise<BookModel | null> {
+    return await Book.findOne({slug:slug})
+  }
   async searchBook(name: string): Promise<BookModel[] | null> {
     return await Book.find({
       title: { $regex: new RegExp(name), $options: 'i' },

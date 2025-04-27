@@ -21,7 +21,12 @@ export const bookApi = createApi({
             query:(id) => `/book/${id}`,
             providesTags:["book"]
         }),
-
+        
+        getFindLocationBook : build.query<BookModel[]|undefined,String|null>({
+            query:(location) => `/searchLocationBook?${location &&"location="+location}`,
+            providesTags:["book"]
+        }),
+        
         createBook:build.mutation<BookModel,any>({
             query:(body) => ({
                 url:`/createBook`,
@@ -107,4 +112,4 @@ export const bookApi = createApi({
     })
 })
 
-export const { useGetBookListQuery , useDeleteSingleBookMutation , useDeleteMultiBookMutation ,useCreateBookMutation , useGetBookQuery , useUpdateBookMutation , useUpdateBookSingleImageMutation , useAddBookSingleImageMutation , useDeleteBookSingleImageMutation } = bookApi
+export const { useGetBookListQuery , useDeleteSingleBookMutation , useDeleteMultiBookMutation ,useCreateBookMutation , useGetBookQuery , useUpdateBookMutation , useUpdateBookSingleImageMutation , useAddBookSingleImageMutation , useDeleteBookSingleImageMutation , useGetFindLocationBookQuery} = bookApi

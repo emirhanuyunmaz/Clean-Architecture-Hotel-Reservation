@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
     const token = request.cookies.getAll("token")
 
     try{
-        if(request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')){
+        if(request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register')){
             // console.log("TTT::",token);
             if(token.length == 0){
                 return NextResponse.next()
@@ -31,6 +31,18 @@ export function middleware(request: NextRequest) {
             }   
             return NextResponse.next()
         }
+
+        if(request.nextUrl.pathname.startsWith('/admin')){
+            if(token.length == 0){
+                console.log("::ADMIN:::");
+                
+                return NextResponse.redirect(new URL('/', request.url))
+            }else{
+                const decode_token = jwtDecode(token[0]?.value)
+                console.log("ADMIN:::::",decode_token);
+                return NextResponse.next()
+            }
+        }
     }catch(err){
         // Token bilgileri silinecek...
         const response = NextResponse.redirect(new URL('/404', request.url))
@@ -43,5 +55,5 @@ export function middleware(request: NextRequest) {
  
 
 export const config = {
-    matcher: ['/about/:path*', '/dashboard/:path*','/login','/signup',"/profile"],
+    matcher: ['/about/:path*', '/dashboard/:path*','/login','/register',"/profile","/admin"],
   }

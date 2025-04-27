@@ -12,7 +12,7 @@ export default function Footer(){
 
             <div className="flex flex-col gap-3" >
                 <h5 className="font-bold text-xl " >Become hotel Owner</h5>
-                <Button variant="contained" >Register Now</Button>
+                <Button href="/register" variant="contained" >Register Now</Button>
             </div>
 
         </div>

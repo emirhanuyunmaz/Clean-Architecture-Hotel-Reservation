@@ -36,6 +36,15 @@ export default function AdminAddUpdateUser({setBack}:{setBack:any}){
     
     const handleClickShowPassword = () => setShowPassword(!showPassword)
 
+    useEffect(() => {
+        if(searchParams.get("id") && searchParams.get("add") == "true"){
+            setBack(true)
+        }
+        
+        if(searchParams.get("id") == null && searchParams.get("add") == null ){
+            setBack(true)
+        }
+    },[searchParams.get("id")])
 
     const {
         register,
@@ -215,7 +224,7 @@ export default function AdminAddUpdateUser({setBack}:{setBack:any}){
             </div>
 
             <div className="ms-auto">
-                <Button type="submit" variant="contained" className="gap-3 flex justify-center mt-10" >CREATE</Button>
+                <Button type="submit" variant="contained" className="gap-3 flex justify-center mt-10" >{searchParams.get("id") ? "UPDATE" :"CREATE"}</Button>
             </div>
         </form>
         

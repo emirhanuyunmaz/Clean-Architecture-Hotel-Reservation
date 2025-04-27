@@ -1,48 +1,50 @@
 import { Bath, BedDouble, ParkingMeter, Refrigerator, Tv, Usb, UtensilsCrossed, Wifi } from "lucide-react";
 
 
-export default function RoomFacilities(){
+export default function RoomFacilities(data:RoomFacilitiesModel){
+    // console.log("DATA:::",data);
+    
     return (<div className="flex justify-around mt-10 py-10 border-2 rounded-xl border-gray-300">
         
-        <div className="flex flex-col items-center" >
+        {data.bedroom.active && <div className="flex flex-col items-center" >
             <BedDouble />
-            <p className="text-secondary " ><span className="text-primary font-bold" >1</span> Bedroom </p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.bedroom.value}</span> Bedroom </p>
+        </div>}
 
-        <div className="flex flex-col items-center" >
+        {data.livingRoom.active && <div className="flex flex-col items-center" >
             <ParkingMeter />
-            <p className="text-secondary" ><span className="text-primary font-bold" >1</span> Living room </p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.livingRoom.value}</span> Living room </p>
+        </div>}
 
-        <div className="flex flex-col items-center" >
+        {data.bathroom.active && <div className="flex flex-col items-center" >
             <Bath />
-            <p className="text-secondary" ><span className="text-primary font-bold" >1</span> Bathroom </p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.bathroom.value}</span> Bathroom </p>
+        </div>}
 
-        <div className="flex flex-col items-center" >
+        {data.diningRoom.active && <div className="flex flex-col items-center" >
             <UtensilsCrossed />
-            <p className="text-secondary" ><span className="text-primary font-bold" >1</span> Dining Room</p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.diningRoom.value}</span> Dining Room</p>
+        </div>}
 
-        <div className="flex flex-col items-center" >
+        {data.wifiSpeed.active && <div className="flex flex-col items-center" >
             <Wifi />
-            <p className="text-secondary" ><span className="text-primary font-bold" >10</span> mbp/2 </p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.wifiSpeed.value}</span> mbp/2 </p>
+        </div>}
 
-        <div className="flex flex-col items-center" >
+        {data.unityReady.active && <div className="flex flex-col items-center" >
             <Usb />
-            <p className="text-secondary" ><span className="text-primary font-bold" >1</span> Unit Ready </p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.unityReady.value}</span> Unit Ready </p>
+        </div>}
 
-        <div className="flex flex-col items-center" >
+        {data.refrigerator.active && <div className="flex flex-col items-center" >
             <Refrigerator />
-            <p className="text-secondary" ><span className="text-primary font-bold" >1</span> Refrigerator </p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.refrigerator.value}</span> Refrigerator </p>
+        </div>}
 
-        <div className="flex flex-col items-center" >
+        {data.tv.active  && <div className="flex flex-col items-center" >
             <Tv />
-            <p className="text-secondary" ><span className="text-primary font-bold" >1</span> Television</p>
-        </div>
+            <p className="text-secondary" ><span className="text-primary font-bold" >{data.tv.value}</span> Television</p>
+        </div>}
 
     </div>)
 } 

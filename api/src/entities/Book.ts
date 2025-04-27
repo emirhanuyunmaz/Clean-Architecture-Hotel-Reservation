@@ -11,39 +11,39 @@ const schema = new Schema<BookModel>({
   totalRoom: { type: String, required: true },
   roomFacilities: {
     bathroom: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     diningRoom: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     livingRoom: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     bedroom: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     refrigerator: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     totalRoom: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     tv: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     unityReady: {
-      active: String,
+      active: Boolean,
       value: String,
     },
     wifiSpeed: {
-      active: String,
+      active: Boolean,
       value: String,
     },
   },

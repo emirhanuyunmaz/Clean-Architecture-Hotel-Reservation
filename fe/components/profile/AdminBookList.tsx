@@ -24,10 +24,10 @@ const columns: GridColDef[] = [
                   <button  onClick={async() => {await onSingleDeleteBook({id:row._id})}} className="hover:opacity-50 transition-all">
                       <Trash/>
                   </button>
-                  <Link  href={`/profile?select=3&add=false&id=${row._id}`} className="hover:opacity-50 transition-all">
+                  <Link  href={`?select=3&add=false&id=${row._id}`} className="hover:opacity-50 transition-all">
                       <ClipboardPenLine color='blue' />
                   </Link>
-                  <Link  href={`/profile?select=3&add=false&id=${row._id}`} className="hover:opacity-50 transition-all">
+                  <Link  href={`/detail/${row.slug}`} className="hover:opacity-50 transition-all">
                       <Eye  color='blue' />
                   </Link>
               </div>)},
@@ -64,7 +64,6 @@ export default function AdminBookList(){
 
     useEffect(() => {
         setSearchText(searchParams.get("searchText") ?? "" );
-        
     },[])
 
     useEffect(() => {

@@ -9,35 +9,35 @@ interface BookModel {
   images:[]|undefined
   roomFacilities:{
       bedroom:{
-          active:string,
+          active:boolean,
           value:number
       },
       livingRoom:{
-          active:string,
+          active:boolean,
           value:number
       },
       bathroom:{
-          active:string,
+          active:boolean,
           value:number
       },
       diningRoom:{
-          active:string,
+          active:boolean,
           value:number
       },
       wifiSpeed:{
-          active:string,
+          active:boolean,
           value:number
       },
       unityReady:{
-          active:string,
+          active:boolean,
           value:number
       },
       refrigerator:{
-          active:string,
+          active:boolean,
           value:number
       },
       tv:{
-          active:string,
+          active:boolean,
           value:number
       },
   }

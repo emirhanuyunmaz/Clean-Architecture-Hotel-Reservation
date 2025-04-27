@@ -36,7 +36,7 @@ export default function Page(){
                 <div className=" h-full flex flex-col gap-10">
                     <div className="flex flex-col gap-3">
                         
-                        <button onClick={() => handleSearch(0)} className={`hover:shadow-xl flex gap-3 items-center p-2 rounded-xl  ${selectMenu == 0 && "active_link"} duration-300`} >
+                        {/* <button onClick={() => handleSearch(0)} className={`hover:shadow-xl flex gap-3 items-center p-2 rounded-xl  ${selectMenu == 0 && "active_link"} duration-300`} >
                             <p className="" ><User /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Profile</p>
                         </button>
@@ -44,29 +44,29 @@ export default function Page(){
                         <button onClick={() => handleSearch(1)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 1 && "active_link"} duration-300 `} >
                             <p className="p-1" ><StickyNote /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Booking</p>
-                        </button>
+                        </button> */}
 
-                        {/* <button onClick={() => handleSearch(2)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 2 && "active_link"} duration-300 `}>
+                        <button onClick={() => handleSearch(1)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 1 && "active_link"} duration-300 `}>
                             <p className="p-1" ><PersonStanding /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Users</p>
                         </button>
 
-                        <button onClick={() => handleSearch(3)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 3 && "active_link"} duration-300 `}>
+                        <button onClick={() => handleSearch(2)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 2 && "active_link"} duration-300 `}>
                             <p className="p-1" ><HomeIcon /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Book List</p>
-                        </button> */}
+                        </button>
                     </div>
 
                     <div  className="flex flex-col gap-3" >
-                        <button onClick={() => handleSearch(4)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 4 && "active_link"} duration-300 `} >
+                        <button onClick={() => handleSearch(3)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 3 && "active_link"} duration-300 `} >
                             <p className="p-1" ><MessageCircle /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Message</p>
                         </button>
 
-                        {/* <button onClick={() => handleSearch(5)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 5 && "active_link"} duration-300 `} >  
+                        <button onClick={() => handleSearch(4)} className={`flex gap-3 items-center p-2 rounded-xl  hover:shadow-xl  ${selectMenu == 4 && "active_link"} duration-300 `} >  
                             <p className="p-1" ><CircleHelp /></p>
                             <p className={`animate__animated animate__lightSpeedInLeft flex`}>Help</p>
-                        </button> */}
+                        </button>
                         {/* 
                         <button className="flex gap-3 relative" >
                             <p className="p-1" ><Settings /></p>
@@ -83,12 +83,12 @@ export default function Page(){
             </div>
 
             <div className="mt-10 w-3/4" >
-                {selectMenu == 0 && <EditProfile/>}
-                {selectMenu == 1 && <UserBooking/>}
-                {/* {selectMenu == 2 && <AdminDashboard/>} */}
-                {/* {selectMenu == 3 && <AdminBook/>} */}
-                {/* {selectMenu == 4 && <UserMessage/>} */}
-                {selectMenu == 5 && <UserHelp/>}
+                {/* {selectMenu == 0 && <EditProfile/>} */}
+                {/* {selectMenu == 1 && <UserBooking/>} */}
+                {selectMenu == 1 && <AdminDashboard/>}
+                {selectMenu == 2 && <AdminBook/>}
+                {selectMenu == 3 && <UserMessage/>}
+                {selectMenu == 4 && <UserHelp/>}
             </div>
         </div>
 

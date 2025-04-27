@@ -6,9 +6,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import ReactImageUploading from "react-images-uploading";
 import { useAddBookSingleImageMutation, useCreateBookMutation, useDeleteBookSingleImageMutation, useGetBookQuery, useUpdateBookMutation, useUpdateBookSingleImageMutation } from "@/store/book/bookApi";
 import { useRouter, useSearchParams } from "next/navigation";
+import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 
+
+const randomNumber = Math.floor(Math.random()*1000)
 export default function AdminAddUpdateBook(){
-    
+
     const searchParams = useSearchParams()
     const router = useRouter()
     
@@ -24,12 +27,14 @@ export default function AdminAddUpdateBook(){
     const [snackBarErrorOpen,setSnackBarErrorOpen] = useState(false)
     const [images, setImages] = useState<{data_url:string,file:any}[]>([]);
     const [updateImage,setUpdateImage] = useState([])
+    const [title,setTitle] = useState("")
     const maxNumber = 5;
-
+    
     const {
         register,
         handleSubmit,
         setValue,
+        getValues,
         formState: { errors },
     } = useForm<BookModel>()
 
@@ -58,9 +63,11 @@ export default function AdminAddUpdateBook(){
         })
     }
 
-    const deleteSingleImage = async (imageName:string) => {
-        console.log("DEL:",imageName);
-        
+    function autoSlug(){
+        setValue("slug",title.replaceAll(" ","-")+"-"+randomNumber)
+    }
+
+    const deleteSingleImage = async (imageName:string) => {        
         await deleteBookSingleImge({imageName:imageName,id:searchParams.get("id")}).unwrap()
         .then(async() => {
             await getBook.refetch()
@@ -142,6 +149,8 @@ export default function AdminAddUpdateBook(){
     
     async function bookDataGet(){
         if(getBook.isSuccess){
+            console.log("Location::",getBook.data.location);
+            
             setValue("description",getBook.data.description)
             setValue("title",getBook.data.title)
             setValue("slug",getBook.data.slug)
@@ -168,6 +177,17 @@ export default function AdminAddUpdateBook(){
         bookDataGet()
     },[getBook.isFetching,getBook.isSuccess,getBook.data?.images])
 
+    useEffect(() => {
+        if(title != ""){
+            autoSlug()
+        }else{
+            setTitle("")
+            setValue("title","")
+            setValue("slug","")
+        }
+    },[title])
+    console.log("ROOM FACT::",getValues("roomFacilities.bedroom.active"));
+    
     return (<div>
             {/* ********************************** */}
             {updateImage.length == 0 && <div className="flex gap-3 mb-10 ">
@@ -256,7 +276,7 @@ export default function AdminAddUpdateBook(){
         
             <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex flex-col flex-1">
-                    <TextField slotProps={{ inputLabel: { shrink: true } }} {...register("title",{required: "Title is required", min: 2 })} label="Title" className="flex-1" />
+                    <TextField slotProps={{ inputLabel: { shrink: true } }} {...register("title",{required: "Title is required", min: 2 })} label="Title" className="flex-1" onChange={(e) => setTitle(e.target.value)} />
                     {errors.title && <span className="text-red-600 text-sm ms-3" >{errors.title.message}</span>}
                 </div>
                 <div className="flex flex-col flex-1">
@@ -264,7 +284,16 @@ export default function AdminAddUpdateBook(){
                     {errors.slug && <span className="text-red-600 text-sm ms-3" >{errors.slug.message}</span>}
                 </div>
                 <div className="flex flex-col flex-1">
-                    <TextField slotProps={{ inputLabel: { shrink: true } }} label="Locaiton" className="flex-1" {...register("location",{required: "Location is required", min: 2 })}/>
+                    
+                        <Autocomplete
+                            placeholder={"Location"}                            
+                            className="outline-none border border-secondary px-3 py-4 rounded-md w-full"
+                            apiKey={`${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`}
+                            onPlaceSelected={(place:any) => setValue("location",place.formatted_address)}
+                            defaultValue={getValues("location")}
+                        /> 
+                    
+                    
                     {errors.location && <span className="text-red-600 text-sm ms-3" >{errors.location.message}</span>}
                 </div>
                 <div className="flex flex-col flex-1">
@@ -305,7 +334,7 @@ export default function AdminAddUpdateBook(){
 
                 </div>
 
-
+                {/* ROOM FACILITIES - START */}
                 <div className="flex flex-col md:w-1/2 gap-3 md:border-l-2 ps-3">
                     
                     <div className="flex items-center gap-3">
@@ -323,7 +352,7 @@ export default function AdminAddUpdateBook(){
                                     />
                             </FormControl>
                         </div>
-                        <FormControlLabel control={<Checkbox />} label="Active" {...register("roomFacilities.bedroom.active")}/>
+                        <FormControlLabel  control={<Checkbox /> } label="Active" {...register("roomFacilities.bedroom.active")}/>
                     </div>
                     
                     <div className="flex items-center gap-3">
@@ -349,7 +378,6 @@ export default function AdminAddUpdateBook(){
                                 type="number"
                                 defaultValue={0}
                                 id="Bathroom"
-                                
                                 startAdornment={<InputAdornment position="start"><Bath/></InputAdornment>}
                                 label="Bathroom"
                                 {...register("roomFacilities.bathroom.value")}
@@ -387,7 +415,7 @@ export default function AdminAddUpdateBook(){
                                 {...register("roomFacilities.wifiSpeed.value")}
                                 />
                         </FormControl>
-                        <FormControlLabel control={<Checkbox />}  label="Active" {...register("roomFacilities.wifiSpeed.active")}/>
+                        <FormControlLabel  control={<Checkbox />}  label="Active" {...register("roomFacilities.wifiSpeed.active")}/>
                     </div>
                     
                     <div className="flex items-center gap-3">
@@ -435,10 +463,12 @@ export default function AdminAddUpdateBook(){
                                 {...register("roomFacilities.tv.value")}
                                 />
                         </FormControl>
-                        <FormControlLabel control={<Checkbox />} label="Active" {...register("roomFacilities.tv.active")}/>
+                        <FormControlLabel control={<Checkbox defaultChecked={getValues("roomFacilities.tv.active")} />} label="Active" {...register("roomFacilities.tv.active")}/>
                     </div>
 
                 </div>
+                {/* ROOM FACILITIES - END */}
+
             </div>
 
         </div>
