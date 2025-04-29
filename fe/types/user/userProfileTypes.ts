@@ -17,3 +17,17 @@ interface singleDeleteUserModel{
 interface multiDeleteUserModel{
     ids:[]
 }
+
+interface sendEmailModel {
+    email:string
+}
+
+interface resetPasswordModel{
+    password:string,
+    passwordConfirm:string
+}
+
+interface resetPasswordAndCodeModel{
+    key:string,
+    password:string
+}

@@ -57,46 +57,50 @@ export class BookController {
   }
 
   async slugOnFindBook(
-    req:Request,
-    res:Response,
-    next:NextFunction
-  ):Promise<any>{
-    try{
-      const {slug} = req.params
-      if(slug){
-        const data = await this.ineractor.onFindSlugBook(slug)
-        
-        if(data){
-          return res.status(200).json(data)
-        }else{
-          return res.status(404).json({message:"Not Found book"})
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { slug } = req.params;
+      if (slug) {
+        const data = await this.ineractor.onFindSlugBook(slug);
+
+        if (data) {
+          return res.status(200).json(data);
+        } else {
+          return res.status(404).json({ message: 'Not Found book' });
         }
       }
-      return res.status(404).json({message:"Not Found book"})
-    }catch(err){
-      next(err)
+      return res.status(404).json({ message: 'Not Found book' });
+    } catch (err) {
+      next(err);
     }
   }
 
   async locationOnFindBook(
-    req:Request,res:Response,next:NextFunction
-  ):Promise<any>{
-    try{
-      const location = req.query.location
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const location = req.query.location;
       // console.log("LOCATION::::",location);
-      
-      if(location){
-        const data = await this.ineractor.onFindLocationBook(location as string)
+
+      if (location) {
+        const data = await this.ineractor.onFindLocationBook(
+          location as string
+        );
         // console.log(data);
-        res.status(200).json(data)
-      }else{
-        const data = await this.ineractor.getBookList()
-        res.status(200).json(data)
+        res.status(200).json(data);
+      } else {
+        const data = await this.ineractor.getBookList();
+        res.status(200).json(data);
       }
-    }catch(err){
-      console.log("ERR::",err);
-      
-      next(err)
+    } catch (err) {
+      console.log('ERR::', err);
+
+      next(err);
     }
   }
 

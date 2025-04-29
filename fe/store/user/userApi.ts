@@ -55,18 +55,38 @@ export const userApi = createApi({
 
         }),
 
+        
         getAllUserList:build.query<userProfileTypes[],any>({
             query : () => "/allUser",
             providesTags:["user"]
         }),
-
+        
         searchUserList:build.query<userProfileTypes[],any>({
             query : (searchText) => `/searchUser/${searchText}`,
             providesTags:["user"]
         }),
+        
+        sendEmail:build.mutation<any,sendEmailModel>({
+            
+            query:(body) => ({
+                url:`/sendEmailResetPassword`,
+                method:"POST",
+                body:body
+            }),
 
+        }),
+        
+        resetPassword:build.mutation<any,resetPasswordAndCodeModel>({
+            
+            query:(body) => ({
+                url:`/resetPassword`,
+                method:"POST",
+                body:body
+            }),
 
+        }),
+        
     }),
 });
 
-export const {useGetUserProfileDataQuery , useOnUpdateUserMutation , useGetAllUserListQuery , useOnSingleDeleteUserMutation,useOnMultiDeleteUserMutation , useSearchUserListQuery , useGetSingleUserQuery} = userApi
+export const {useGetUserProfileDataQuery , useOnUpdateUserMutation , useGetAllUserListQuery , useOnSingleDeleteUserMutation,useOnMultiDeleteUserMutation , useSearchUserListQuery , useGetSingleUserQuery , useSendEmailMutation , useResetPasswordMutation} = userApi

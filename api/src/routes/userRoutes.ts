@@ -11,10 +11,14 @@ import { Token } from '../external-libraries/Token';
 import { IAuthMiddleware } from '../interfaces/IAuthMiddleware';
 import { AuthMiddlewareInteractor } from '../interactors/AuthMiddlewareInteractor';
 import { AuthControl } from '../middleware/AuthControl';
+import { ISendEmail } from '../interfaces/ISendEmail';
+import { SendEmail } from '../external-libraries/SendEmail';
 
 const container = new Container();
 
 container.bind<IToken>(INTERFACE_TYPE.Token).to(Token);
+
+container.bind<ISendEmail>(INTERFACE_TYPE.SendEmail).to(SendEmail);
 
 container
   .bind<IAuthMiddleware>(INTERFACE_TYPE.AuthMiddlewareInteractor)
@@ -73,5 +77,12 @@ router.delete(
   authController.tokenControl.bind(authController),
   controller.multiDeleteUser.bind(controller)
 );
+
+router.post(
+  '/sendEmailResetPassword',
+  controller.sendEmailResetPassword.bind(controller)
+);
+
+router.post('/resetPassword', controller.resetPassword.bind(controller));
 
 export default router;

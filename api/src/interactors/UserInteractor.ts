@@ -68,4 +68,46 @@ export class UserInteractor implements IUserInteractor {
     }
     return null;
   }
+
+  async changePassword({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<{ email: string; password: string } | null> {
+    return await this.repository.changePassword({ email, password });
+  }
+
+  async emailCodeSave({
+    email,
+    code,
+  }: {
+    email: string;
+    code: string;
+  }): Promise<{ email: String; code: String } | null | undefined> {
+    return await this.repository.emailCodeSave({ email, code });
+  }
+
+  async emailCodeVerify({
+    email,
+    code,
+  }: {
+    email: string;
+    code: string;
+  }): Promise<Boolean | null> {
+    return await this.repository.emailCodeVerify({ email, code });
+  }
+
+  async checkCode({
+    code,
+  }: {
+    code: string;
+  }): Promise<{ email: String } | null> {
+    return await this.repository.checkCode({ code: code });
+  }
+
+  async deleteCode({ code }: { code: string }): Promise<Boolean | null> {
+    return await this.repository.deleteCode({ code: code });
+  }
 }

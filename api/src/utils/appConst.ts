@@ -8,5 +8,6 @@ export const INTERFACE_TYPE = {
   AuthControl: Symbol.for('AuthControl'),
   AuthMiddlewareInteractor: Symbol.for('AuthMiddlewareInteractor'),
   Token: Symbol.for('Token'),
+  SendEmail: Symbol.for('SendEmail'),
   ImagesProcess: Symbol.for('ImagesProcess'),
 };

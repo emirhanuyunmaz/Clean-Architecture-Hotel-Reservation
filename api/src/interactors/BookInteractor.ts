@@ -16,14 +16,13 @@ export class BookInteractor implements IBookInteractor {
     this.repository = repository;
     this.imagesProcess = imagesProcess;
   }
-  
+
   async onFindLocationBook(location: string): Promise<BookModel[] | null> {
-    return await this.repository.locationSlugOnFindBook(location)
+    return await this.repository.locationSlugOnFindBook(location);
   }
-  
+
   async onFindSlugBook(slug: string): Promise<BookModel | null> {
-    return await this.repository.slugOnFindBook(slug) 
-    
+    return await this.repository.slugOnFindBook(slug);
   }
   async searchBook(name: string): Promise<BookModel[] | null> {
     if (name) {

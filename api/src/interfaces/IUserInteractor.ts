@@ -20,4 +20,27 @@ export interface IUserInteractor {
   }: {
     searchText: string;
   }): Promise<UserModel[] | null>;
+  changePassword({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<{ email: string; password: string } | null>;
+  emailCodeSave({
+    email,
+    code,
+  }: {
+    email: string;
+    code: string;
+  }): Promise<{ email: String; code: String } | null | undefined>;
+  emailCodeVerify({
+    email,
+    code,
+  }: {
+    email: string;
+    code: string;
+  }): Promise<Boolean | null>;
+  checkCode({ code }: { code: string }): Promise<{ email: String } | null>;
+  deleteCode({ code }: { code: string }): Promise<Boolean | null>;
 }

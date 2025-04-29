@@ -37,7 +37,6 @@ export interface IBookInteractor {
     imageName: string;
   }): Promise<BookModel | null>;
   searchBook(name: string): Promise<BookModel[] | null>;
-  onFindSlugBook(slug:string):Promise<BookModel | null>;
-  onFindLocationBook(location:string):Promise<BookModel[] | null>;
+  onFindSlugBook(slug: string): Promise<BookModel | null>;
+  onFindLocationBook(location: string): Promise<BookModel[] | null>;
 }
-

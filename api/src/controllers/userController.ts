@@ -2,15 +2,19 @@ import { inject, injectable } from 'inversify';
 import { IUserInteractor } from '../interfaces/IUserInteractor';
 import { INTERFACE_TYPE } from '../utils';
 import { NextFunction, Request, Response } from 'express';
+import { ISendEmail } from '../interfaces/ISendEmail';
 
 @injectable()
 export class UserController {
   private interactor: IUserInteractor;
+  private sendEmail: ISendEmail;
 
   constructor(
-    @inject(INTERFACE_TYPE.UserInteractor) interactor: IUserInteractor
+    @inject(INTERFACE_TYPE.UserInteractor) interactor: IUserInteractor,
+    @inject(INTERFACE_TYPE.SendEmail) sendEmail: ISendEmail
   ) {
     this.interactor = interactor;
+    this.sendEmail = sendEmail;
   }
 
   async onCreateUser(
@@ -24,7 +28,6 @@ export class UserController {
       const password = req.body['password'];
       const country = req.body['country'];
       const phoneNumber = req.body['phoneNumber'];
-      // console.log(nameSurname,email,password,country,phoneNumber);
 
       const controle = await this.interactor.findUserEmail({ email: email });
 
@@ -195,6 +198,64 @@ export class UserController {
         return res.status(201).json(data);
       }
       return res.status(401).json();
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async sendEmailResetPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { email } = req.body;
+
+      const code = this.sendEmail.createCode();
+
+      const resEmail = await this.sendEmail.sendEmailResetPassword(
+        email,
+        code as string
+      );
+
+      if (resEmail) {
+        const resCodeSave = await this.interactor.emailCodeSave({
+          email: email,
+          code: code as string,
+        });
+        if (resCodeSave) {
+          res.status(201).json({ message: 'Reset password' });
+        } else {
+          res.status(400).json({ message: 'Code not found' });
+        }
+      } else {
+        res.status(400).json({ message: 'Code not found' });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async resetPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { key, password } = req.body;
+
+      const email = await this.interactor.checkCode({ code: key });
+
+      if (email) {
+        const data = await this.interactor.changePassword({
+          email: email.email as string,
+          password,
+        });
+        await this.interactor.deleteCode({ code: key });
+        res.status(201).json({ message: 'Succes change password' });
+      } else {
+        res.status(400).json({ message: 'Email code not send' });
+      }
     } catch (err) {
       next(err);
     }
