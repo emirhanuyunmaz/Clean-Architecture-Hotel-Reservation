@@ -14,6 +14,12 @@ import { AuthControl } from '../middleware/AuthControl';
 import multer from 'multer';
 import { ImagesProcess } from '../external-libraries/ImagesProcess';
 import { IImagesProcess } from '../interfaces/IImagesProcess';
+import { RoomPricePayment } from '../external-libraries/RoomPricePayment';
+import { IRoomPricePayment } from '../interfaces/IRoomPricePayment';
+import { IBookReservationRepository } from '../interfaces/IBookReservationRepository';
+import { bookReservationRepository } from '../repositories/BookReservationRepository';
+import { IBookReservationInteractor } from '../interfaces/IBookReservationInteractor';
+import { BookReservationInteractor } from '../interactors/BookReservationInteractor';
 
 const upload = multer({
   limits: {
@@ -42,8 +48,20 @@ container
   .to(bookRepository);
 
 container
+  .bind<IBookReservationRepository>(INTERFACE_TYPE.BookReservationRepository)
+  .to(bookReservationRepository);
+
+  container
+  .bind<IRoomPricePayment>(INTERFACE_TYPE.RoomPricePayment)
+  .to(RoomPricePayment);
+
+container
   .bind<IBookInteractor>(INTERFACE_TYPE.BookInteractor)
   .to(BookInteractor);
+
+container
+  .bind<IBookReservationInteractor>(INTERFACE_TYPE.BookReservationInteractor)
+  .to(BookReservationInteractor);
 
 container.bind(INTERFACE_TYPE.BookController).to(BookController);
 container.bind(INTERFACE_TYPE.AuthControl).to(AuthControl);
@@ -118,6 +136,18 @@ router.delete(
   '/deleteMultiBook',
   authController.tokenControl.bind(authController),
   controller.deleteMultiBook.bind(controller)
+);
+
+router.post(
+  '/paymentPrice',
+  authController.tokenControl.bind(authController),
+  controller.bookReservationPayment.bind(controller)
+);
+
+router.get(
+  '/userBookList',
+  authController.tokenControl.bind(authController),
+  controller.userReservationList.bind(controller)
 );
 
 export default router;

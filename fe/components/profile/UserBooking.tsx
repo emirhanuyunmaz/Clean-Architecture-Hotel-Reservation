@@ -2,16 +2,23 @@ import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, T
 import { useState } from "react";
 import UserBookCard from "./UserBookCard";
 import { Eraser } from "lucide-react";
-
+import { useUserBookListQuery } from "@/store/book/bookApi";
+// bookID : {_id: '680e4be08b64b4c55ac3ae8f', images: Array(5), price: '20', title: 'Good Room'}
+// endDay:"2025-04-06T21:00:00.000Z"
+// isPayment:true
+// startDay: "2025-04-05T21:00:00.000Z"
+// totalPrice:20
 
 export default function UserBooking(){
     const [shortBy,setShortBy] = useState("")
-
+    const userBookList = useUserBookListQuery("") 
     const selectHandleChange = (event: SelectChangeEvent) => setShortBy(event.target.value)
-
+    
+    console.log(userBookList.data);
+    
     return (<div className="" >
         <div>
-            <p className="font-bold">HELLO USER NAME</p>
+            <p className="font-bold">HELLO</p>
             <p className="text-sm text-secondary" >Have nice day.</p>
         </div>
         <div className="mt-10 w-full flex gap-5 ">
@@ -35,7 +42,7 @@ export default function UserBooking(){
         </div>
 
         <div className="flex mt-10">
-            <UserBookCard  />
+            { userBookList.data?  userBookList.data.map((book) => <UserBookCard key={book._id} {...book} />):<p>Reservation is not found</p>}
             
         </div>
 

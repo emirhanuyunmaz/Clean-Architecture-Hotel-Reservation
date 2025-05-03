@@ -109,7 +109,22 @@ export const bookApi = createApi({
             invalidatesTags:["book"]
         }),
 
+        bookPaymentPrice:build.mutation<any,BookPaymentModel>({
+            query:(body) => ({
+                url:`/paymentPrice`,
+                method:"POST",
+                body:body
+            }),
+            invalidatesTags:["book"]
+        }),
+        
+        userBookList : build.query<userBookModel[],any>({
+            query:() => `/userBookList`,
+            providesTags:["book"]
+        }),
+        
+
     })
 })
 
-export const { useGetBookListQuery , useDeleteSingleBookMutation , useDeleteMultiBookMutation ,useCreateBookMutation , useGetBookQuery , useUpdateBookMutation , useUpdateBookSingleImageMutation , useAddBookSingleImageMutation , useDeleteBookSingleImageMutation , useGetFindLocationBookQuery} = bookApi
+export const { useGetBookListQuery , useDeleteSingleBookMutation , useDeleteMultiBookMutation ,useCreateBookMutation , useGetBookQuery , useUpdateBookMutation , useUpdateBookSingleImageMutation , useAddBookSingleImageMutation , useDeleteBookSingleImageMutation , useGetFindLocationBookQuery , useBookPaymentPriceMutation , useUserBookListQuery} = bookApi

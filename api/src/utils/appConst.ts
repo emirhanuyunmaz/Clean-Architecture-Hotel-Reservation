@@ -1,8 +1,10 @@
 export const INTERFACE_TYPE = {
   UserRepository: Symbol.for('UserRepository'),
   BookRepository: Symbol.for('BookRepository'),
+  BookReservationRepository: Symbol.for('BookReservationRepository'),
   UserInteractor: Symbol.for('UserInteractor'),
   BookInteractor: Symbol.for('BookInteractor'),
+  BookReservationInteractor: Symbol.for('BookReservationInteractor'),
   UserController: Symbol.for('UserController'),
   BookController: Symbol.for('BookController'),
   AuthControl: Symbol.for('AuthControl'),
@@ -10,4 +12,5 @@ export const INTERFACE_TYPE = {
   Token: Symbol.for('Token'),
   SendEmail: Symbol.for('SendEmail'),
   ImagesProcess: Symbol.for('ImagesProcess'),
+  RoomPricePayment: Symbol.for('RoomPricePayment'),
 };

@@ -3,13 +3,15 @@ import HotelMiniImageCard from "@/components/HotelMiniImageCard";
 import RoomFacilities from "@/components/RoomFacilities";
 import { Button} from "@mui/material";
 import ImageList from "@/components/ImageList";
+import ReservationDialog from "@/components/ReservationDialog";
 
 
 export default async function Page({params}:any){
     const {slug} = await params;
     const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/book/singleBook/${slug}`)    
     const res:BookModel = await data.json()
-    console.log(res.roomFacilities);
+    // const tokenDecode = 
+    // console.log(res.roomFacilities);
     
     
     if (!(data.ok)) return <p>ERROR</p>
@@ -50,7 +52,7 @@ export default async function Page({params}:any){
             <div className="w-1/3 border-2 border-gray-200 flex flex-col justify-center px-16 py-10 gap-3 rounded-xl" >
                 <h4 className="font-bold text-primary text-2xl ">Start Booking</h4>
                 <p><span className="text-green-500 font-bold text-3xl " >${res.price}</span> <span className="text-secondary text-3xl " >per Day</span> </p>
-                <Button variant="contained" className="" >Book Now!</Button>
+                <ReservationDialog bookID={res._id!} />
             </div>
         </div>
         
@@ -72,5 +74,6 @@ export default async function Page({params}:any){
         </div>
         {/* HOTEL CHOOSE -- END */}
         
+
     </div>)
 }

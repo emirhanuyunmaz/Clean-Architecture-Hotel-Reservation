@@ -2,6 +2,7 @@ export interface BookModel {
   title: string;
   location: string;
   totalRoom: string;
+  roomCapacity:number;
   price: string;
   images: string[];
   slug: string;

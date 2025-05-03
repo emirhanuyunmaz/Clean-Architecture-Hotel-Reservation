@@ -27,7 +27,6 @@ export default function NewPassword({code}:{code:string}){
     };
 
     const onSubmit: SubmitHandler<resetPasswordModel> =async (data) => {
-        console.log("DDAATTAA::",data);
         const newData = {
             key:code,
             password:data.password

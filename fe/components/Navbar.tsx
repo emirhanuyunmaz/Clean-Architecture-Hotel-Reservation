@@ -5,6 +5,8 @@ import UserProfileIcon from "./UserProfileIcon";
 import { getCookie } from "cookies-next/client";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { Button } from "@mui/material";
+import { Menu } from "lucide-react";
 
 export default function Navbar(){
     const [userLogin,setUserLogin] = useState(false)
@@ -29,7 +31,7 @@ export default function Navbar(){
                 <HotelIcon/>
             </div>
 
-            <div className="flex gap-5 items-center " >
+            <div className="hidden md:flex gap-5 items-center " >
                 <Link href={"/"} className="hover:text-primary transition-all" >Home</Link>
                 <Link href={"/hotels"} className="hover:text-primary transition-all" >Hotels</Link>
                 <Link href={"/contact"} className="hover:text-primary transition-all" >Contact</Link>
@@ -44,6 +46,10 @@ export default function Navbar(){
                     userIsAdmin && <Link href={`/admin`} className="font-bold hover:underline" >Admin</Link>
                 }
             </div>
+
+            <Button className="md:hidden">
+                <Menu/>
+            </Button>
         </div>
         
     </nav>)

@@ -46,7 +46,6 @@ export class bookRepository implements IBookRepository {
     const book = await Book.findById(id);
     if (book) {
       await Book.deleteOne({ _id: id });
-      // Resim silme işlemi eklenecek
       return book;
     } else {
       throw new Error('Not found Book');
@@ -56,7 +55,6 @@ export class bookRepository implements IBookRepository {
     try {
       const books = await Book.find({ _id: { $in: ids } });
       if (books) {
-        // resim silme işlemi eklenecek
         await Book.deleteMany({ _id: { $in: ids } });
         return books;
       } else {

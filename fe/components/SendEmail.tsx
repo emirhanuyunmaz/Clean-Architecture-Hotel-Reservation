@@ -33,9 +33,7 @@ export default function SendEmail({setControl}:{setControl:any}){
             setSnackBarSuccesOpen(true)
             setControl(1)
         })
-        .catch((err) => {
-            console.log(err);
-            
+        .catch((err) => {            
             setSnackBarErrorOpen(true)
         })
         

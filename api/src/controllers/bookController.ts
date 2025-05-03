@@ -3,17 +3,25 @@ import { IBookInteractor } from '../interfaces/IBookInteractor';
 import { INTERFACE_TYPE } from '../utils';
 import { NextFunction, Request, Response } from 'express';
 import { IImagesProcess } from '../interfaces/IImagesProcess';
+import { IRoomPricePayment } from '../interfaces/IRoomPricePayment';
+import { IBookReservationInteractor } from '../interfaces/IBookReservationInteractor';
 
 export class BookController {
   private ineractor: IBookInteractor;
   private imagesProcess: IImagesProcess;
+  private paymentPrice: IRoomPricePayment
+  private bookReservationInteractor : IBookReservationInteractor
 
   constructor(
     @inject(INTERFACE_TYPE.BookInteractor) interacter: IBookInteractor,
-    @inject(INTERFACE_TYPE.ImagesProcess) imagesProcess: IImagesProcess
+    @inject(INTERFACE_TYPE.ImagesProcess) imagesProcess: IImagesProcess,
+    @inject(INTERFACE_TYPE.RoomPricePayment) paymentPrice: IRoomPricePayment,
+    @inject(INTERFACE_TYPE.BookReservationInteractor) bookReservationInteractor: IBookReservationInteractor,
   ) {
     this.ineractor = interacter;
     this.imagesProcess = imagesProcess;
+    this.paymentPrice = paymentPrice;
+    this.bookReservationInteractor = bookReservationInteractor
   }
 
   async onCreateBook(
@@ -22,8 +30,6 @@ export class BookController {
     next: NextFunction
   ): Promise<any> {
     try {
-      // console.log(req.body.roomFacilities);
-
       let newBook = req.body;
       const imageNameList = await this.imagesProcess.uploadMultiImage(
         req.files! as Express.Multer.File[]
@@ -47,6 +53,7 @@ export class BookController {
     try {
       const id = req.params.id;
       if (id != 'null') {
+        
         const data = await this.ineractor.getBook({ id: id });
         return res.status(200).json(data);
       }
@@ -247,4 +254,37 @@ export class BookController {
       next(err);
     }
   }
+
+  async bookReservationPayment(req:Request,res:Response,next:NextFunction):Promise<any>{
+    try{
+      const data = req.body
+      const userID = req.headers.id
+      const paymentRes = await this.paymentPrice.totalPayment(data)
+      
+      if(paymentRes){
+        await this.bookReservationInteractor.addReservation({bookID:data.Reservation.bookID,endDay:data.Reservation.endDay,isPayment:paymentRes,startDay:data.Reservation.startDay,totalPrice:data.Price.roomPrice*data.Price.totalDay,userID:userID as string})
+        
+        return res.status(201).json({message:"Success payment"})
+      }
+      else{
+        return res.status(400).json({message:"Payment Error"})
+      }
+
+      }catch(err){
+      next(err)
+    }
+  }
+
+  async userReservationList(req:Request,res:Response,next:NextFunction):Promise<any>{
+    try{
+      const id = req.headers.id
+      const data = await this.bookReservationInteractor.getUserReservationList(id as string)
+      console.log(data);
+      
+      return res.status(200).json(data)
+    }catch(err){
+      next(err)
+    }
+  }
+
 }

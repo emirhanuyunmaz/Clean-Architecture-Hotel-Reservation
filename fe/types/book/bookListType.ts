@@ -50,3 +50,12 @@ interface multiDeleteBookModel{
 interface searchBookModel{
     searchText:string
 }
+
+interface userBookModel {
+    _id:string,
+    bookID:{_id: string, images: [], price: string, title: string,location:string},
+    startDay:string,
+    endDay:string,
+    isPayment:boolean,
+    totalPrice:number
+}
