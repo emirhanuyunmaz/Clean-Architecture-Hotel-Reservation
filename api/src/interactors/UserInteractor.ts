@@ -31,8 +31,8 @@ export class UserInteractor implements IUserInteractor {
     return await this.repository.searchUser({ searchText: searchText });
   }
 
-  allUserList(): Promise<UserModel[] | null> {
-    return this.repository.allUserList();
+  async allUserList(): Promise<UserModel[] | null> {
+    return await this.repository.allUserList();
   }
 
   async createUser(data: UserModel): Promise<UserModel | null> {

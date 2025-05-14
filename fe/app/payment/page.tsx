@@ -6,10 +6,11 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 
 export default function Page(){
+    const router = useRouter()
     const selector = useSelector((state:RootState) => state!.reservation )
     
     const [paymentPriceBook,resPaymentPriceBoook] = useBookPaymentPriceMutation()
@@ -55,12 +56,10 @@ export default function Page(){
         await paymentPriceBook(newData).unwrap()
         .then(() => {
             setSnackBarSuccesOpen(true)
+            router.push("/profile?select=1")
         })
-        .catch((err) => {
-            console.log("ERR:",err);
-            
+        .catch((err) => {            
             setSnackBarErrorOpen(true)
-
         })
 
     }

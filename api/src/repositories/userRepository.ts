@@ -23,7 +23,7 @@ export class UserRepository implements IUserRepository {
       return false;
     }
   }
-  async multiDeleteUser({ idList }: { idList: [] }): Promise<boolean | null> {
+  async multiDeleteUser({ idList }: { idList: string[] }): Promise<boolean | null> {
     try {
       await User.deleteMany({ _id: { $in: idList } });
       return true;
@@ -66,8 +66,9 @@ export class UserRepository implements IUserRepository {
   }): Promise<{ email: string; password: string } | null> {
     return await User.findOneAndUpdate(
       { email: email },
-      { password: password }
-    ).select('email password');
+      { password: password },
+      { new: true, projection: { email: 1,password:1 } } 
+    )
   }
 
   async emailCodeSave({

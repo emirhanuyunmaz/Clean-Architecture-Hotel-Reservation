@@ -10,8 +10,7 @@ export default async function Page({params}:any){
     const {slug} = await params;
     const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/book/singleBook/${slug}`)    
     const res:BookModel = await data.json()
-    // const tokenDecode = 
-    // console.log(res.roomFacilities);
+    
     
     
     if (!(data.ok)) return <p>ERROR</p>
@@ -59,20 +58,7 @@ export default async function Page({params}:any){
         <div>
             <RoomFacilities {...res.roomFacilities}/>
         </div>
-        
-        {/* HOTEL CHOOSE */}
-        <div className="mt-10">
-            <h3 className="text-2xl font-bold text-primary" >Treasure to Choose</h3>
-            <div className="flex flex-nowrap gap-3 overflow-y-hidden overflow-x-scroll py-3" >
-                {/* <HotelMiniImageCard />
-                <HotelMiniImageCard />
-                <HotelMiniImageCard />
-                <HotelMiniImageCard />
-                <HotelMiniImageCard />
-                <HotelMiniImageCard /> */}
-            </div>
-        </div>
-        {/* HOTEL CHOOSE -- END */}
+
         
 
     </div>)

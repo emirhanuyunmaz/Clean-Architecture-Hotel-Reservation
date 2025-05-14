@@ -12,7 +12,7 @@ export default function Home() {
           <h2 className="text-4xl text-wrap font-bold w-2/3 " >Forget Busy Work , Start Next Vacation</h2>
           <p className="w-1/2 text-gray-400 text-xl" >We provide what you need to enjoy your holiday with family. Time to make another memorable moments. </p>
           <div>
-            <Button variant="contained" className="me-auto" >Showe More</Button>
+            <Button variant="contained" LinkComponent={"a"} href="/hotels" className="me-auto" >Showe More</Button>
           </div>
           <div className="text-gray-500 flex justify-around" >
             <div className="flex flex-col gap-2">
@@ -27,7 +27,7 @@ export default function Home() {
             
             <div className="flex flex-col gap-2">
               <MapPin  size={40} color="black"/>
-              <p className="text-sm" ><span className="text-black font-bold text-lg">100</span> Cities</p>
+              <p className="text-sm" ><span className="text-black font-bold text-lg">1</span> Cities</p>
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@ export default function Home() {
       </div>
 
       <div>
-        <ReservationComponent/>
+        {/* <ReservationComponent/> */}
       </div>
 
       <div>

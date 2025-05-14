@@ -278,9 +278,7 @@ export class BookController {
   async userReservationList(req:Request,res:Response,next:NextFunction):Promise<any>{
     try{
       const id = req.headers.id
-      const data = await this.bookReservationInteractor.getUserReservationList(id as string)
-      console.log(data);
-      
+      const data = await this.bookReservationInteractor.getUserReservationList(id as string)      
       return res.status(200).json(data)
     }catch(err){
       next(err)
