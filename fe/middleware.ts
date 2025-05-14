@@ -23,7 +23,9 @@ export function middleware(request: NextRequest) {
                 }
             }
         }
-
+        if(request.nextUrl.pathname.startsWith('/payment') && token.length == 0){
+            return NextResponse.redirect(new URL('/login', request.url))
+        }
         if(request.nextUrl.pathname.startsWith('/profile')){
             // console.log("TTT::",token);
             if(token.length == 0){
@@ -55,5 +57,5 @@ export function middleware(request: NextRequest) {
  
 
 export const config = {
-    matcher: ['/about/:path*', '/dashboard/:path*','/login','/register',"/profile","/admin"],
+    matcher: ['/about/:path*', '/dashboard/:path*','/login','/register',"/profile","/admin","/payment"],
   }
