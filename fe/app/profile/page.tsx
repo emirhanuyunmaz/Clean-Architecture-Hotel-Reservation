@@ -7,6 +7,7 @@ import UserBooking from "@/components/profile/UserBooking";
 import UserHelp from "@/components/profile/UserHelp";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { Suspense } from "react";
 
 export default function Page(){
     const searchParams = useSearchParams()
@@ -19,7 +20,7 @@ export default function Page(){
         router.push(`?select=${term}`)
     }
 
-    return (<div className="min-h-[85vh]" >
+    return (<Suspense fallback={<div>Yükleniyor...</div>}><div className="min-h-[85vh]" >
 
         <div className="flex h-full gap-10 ">
 
@@ -67,5 +68,5 @@ export default function Page(){
             </div>
         </div>
 
-    </div>)
+    </div></Suspense>)
 } 
